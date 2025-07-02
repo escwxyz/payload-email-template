@@ -7,6 +7,20 @@ on:
 jobs:
   cache-and-install:
     runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URI: mongodb://127.0.0.1:27017/payload-email-template
+      PAYLOAD_SECRET: YOUR_SECRET_HERE
 
     steps:
       - name: Checkout
