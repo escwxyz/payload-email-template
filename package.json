@@ -1,0 +1,124 @@
+{
+  "name": "payload-email-template",
+  "version": "0.0.1",
+  "description": "A plugin for Payload CMS to create email templates based on React Email",
+  "author": "Jie Wang <hi@jiewa.ng>",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./client": {
+      "import": "./src/exports/client.ts",
+      "types": "./src/exports/client.ts",
+      "default": "./src/exports/client.ts"
+    },
+    "./rsc": {
+      "import": "./src/exports/rsc.ts",
+      "types": "./src/exports/rsc.ts",
+      "default": "./src/exports/rsc.ts"
+    }
+  },
+  "main": "./src/exports/index.ts",
+  "types": "./src/exports/index.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "build:swc": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths",
+    "build:types": "tsc --outDir dist --rootDir ./src",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png,json}\" dist/",
+    "dev": "next dev dev --turbo",
+    "dev:generate-importmap": "pnpm dev:payload generate:importmap",
+    "dev:generate-types": "pnpm dev:payload generate:types",
+    "dev:payload": "cross-env PAYLOAD_CONFIG_PATH=./dev/payload.config.ts payload",
+    "lint": "eslint",
+    "lint:fix": "eslint ./src --fix",
+    "prepublishOnly": "pnpm clean && pnpm build",
+    "test": "pnpm test:unit && pnpm test:e2e && pnpm test:int",
+    "test:e2e": "playwright test",
+    "test:int": "vitest --dir integration --run",
+    "test:unit": "vitest --dir src --run",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "release": "pnpm prepublishOnly && pnpm changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.5",
+    "@eslint/eslintrc": "^3.2.0",
+    "@payloadcms/db-mongodb": "3.44.0",
+    "@payloadcms/db-postgres": "3.44.0",
+    "@payloadcms/db-sqlite": "3.44.0",
+    "@payloadcms/eslint-config": "3.9.0",
+    "@payloadcms/next": "3.44.0",
+    "@payloadcms/richtext-lexical": "3.44.0",
+    "@payloadcms/ui": "3.44.0",
+    "@playwright/test": "^1.52.0",
+    "@swc-node/register": "1.10.9",
+    "@swc/cli": "0.6.0",
+    "@types/node": "^22.5.4",
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.2",
+    "copyfiles": "2.4.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.23.0",
+    "eslint-config-next": "15.3.0",
+    "graphql": "^16.8.1",
+    "mongodb-memory-server": "10.1.4",
+    "next": "15.3.0",
+    "open": "^10.1.0",
+    "payload": "3.44.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "qs-esm": "7.0.2",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "sharp": "0.32.6",
+    "sort-package-json": "^2.10.0",
+    "typescript": "5.7.3",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.1.2"
+  },
+  "peerDependencies": {
+    "payload": "^3.37.0"
+  },
+  "engines": {
+    "node": "^18.20.2 || >=20.9.0",
+    "pnpm": "^9 || ^10"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "import": "./dist/exports/index.js",
+        "types": "./dist/exports/index.d.ts",
+        "default": "./dist/exports/index.js"
+      },
+      "./client": {
+        "import": "./dist/exports/client.js",
+        "types": "./dist/exports/client.d.ts",
+        "default": "./dist/exports/client.js"
+      },
+      "./rsc": {
+        "import": "./dist/exports/rsc.js",
+        "types": "./dist/exports/rsc.d.ts",
+        "default": "./dist/exports/rsc.js"
+      }
+    },
+    "main": "./dist/exports/index.js",
+    "types": "./dist/exports/index.d.ts"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
+  },
+  "registry": "https://registry.npmjs.org/",
+  "dependencies": {
+    "@react-email/components": "^0.1.1",
+    "@react-email/render": "^1.1.3"
+  }
+}

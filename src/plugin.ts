@@ -1,0 +1,102 @@
+import type { Access, Config } from 'payload'
+
+import { ImageBlock } from './blocks/Image/config.js'
+import { createEmailTemplatesCollection } from './collections/EmailTemplates.js'
+import { createStyleField } from './fields/style.js'
+import { setPluginConfig } from './store.js'
+import type { PluginOptions } from './types.js'
+import { validateImageFormat } from './validations/validateImageFormat.js'
+
+export const emailTemplatePlugin =
+  (pluginOptions: PluginOptions) =>
+  (config: Config): Config => {
+    if (!config.collections) {
+      config.collections = []
+    }
+
+    const imageCollectionSlug = pluginOptions.imageCollectionSlug || 'media'
+    const disableStyle =
+      pluginOptions.disableStyle === undefined ? false : pluginOptions.disableStyle
+    const isLocalizationEnabled = !!config.localization
+
+    const endpointAccess: Access = pluginOptions.endpointAccess || (({ req }) => !req.user)
+
+    ImageBlock.fields.unshift({
+      name: 'alt',
+      label: 'Alt Text',
+      type: 'text',
+      ...(isLocalizationEnabled ? { localized: true } : {}),
+    })
+
+    ImageBlock.fields.unshift({
+      name: 'image',
+      type: 'upload',
+      relationTo: imageCollectionSlug,
+      label: 'Image',
+      validate: validateImageFormat,
+    })
+
+    ImageBlock.fields.push(createStyleField())
+
+    const previewBreakpoints = pluginOptions.previewBreakpoints || [
+      {
+        name: 'mobile',
+        label: 'Mobile',
+        width: 375,
+        height: 667,
+      },
+      {
+        name: 'desktop',
+        label: 'Desktop',
+        width: 1440,
+        height: 900,
+      },
+    ]
+
+    setPluginConfig({
+      ...pluginOptions,
+      endpointAccess,
+      previewBreakpoints,
+      imageCollectionSlug,
+      disableStyle,
+      isLocalizationEnabled: !!config.localization,
+    })
+
+    const emailTemplates = createEmailTemplatesCollection()
+    config.collections.push(emailTemplates)
+
+    /**
+     * If the plugin is disabled, we still want to keep added collections/fields so the database schema is consistent which is important for migrations.
+     * If your plugin heavily modifies the database schema, you may want to remove this property.
+     */
+    if (pluginOptions.disabled) {
+      return config
+    }
+
+    if (!config.endpoints) {
+      config.endpoints = []
+    }
+
+    if (!config.admin) {
+      config.admin = {}
+    }
+
+    if (!config.admin.components) {
+      config.admin.components = {}
+    }
+
+    if (!config.admin.components.beforeDashboard) {
+      config.admin.components.beforeDashboard = []
+    }
+
+    const incomingOnInit = config.onInit
+
+    config.onInit = async (payload) => {
+      // Ensure we are executing any existing onInit functions before running our own.
+      if (incomingOnInit) {
+        await incomingOnInit(payload)
+      }
+    }
+
+    return config
+  }
