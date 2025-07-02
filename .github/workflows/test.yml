@@ -1,13 +1,14 @@
-name: Unit Test
+name: Test
 
 on:
   - push
   - pull_request
+env:
+  NODE_ENV: test
 
 jobs:
   cache-and-install:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,12 +30,6 @@ jobs:
 
       - name: Install Playwright Browsers
         run: pnpm playwright install --with-deps
-
-      - name: Start dev server
-        run: pnpm dev &
-
-      - name: Wait for server
-        run: npx wait-on http://localhost:3000/admin
 
       - name: Test
         run: pnpm run test

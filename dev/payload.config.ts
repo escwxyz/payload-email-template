@@ -25,7 +25,6 @@ const buildConfigWithMemoryDB = async () => {
         dbName: 'payloadmemory',
       },
     })
-
     process.env.DATABASE_URI = `${memoryDB.getUri()}&retryWrites=true`
   }
 

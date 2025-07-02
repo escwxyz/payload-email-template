@@ -40,7 +40,7 @@ export default buildConfig({
         { name: 'desktop', label: 'Desktop', width: 1440, height: 900 },
       ],
       macros: {
-        companyName: 'Exampel Inc.',
+        companyName: 'Example Inc.',
         // ...add your default macros here
       },
       disableStyle: false, // (optional) allow custom style overrides, default: true
@@ -77,7 +77,7 @@ Macros are replaced at render time using the values from your config or API call
 
 ### Localization
 
-If you enable localization in your Payload config, the plugin will automatically make text related tempalte fields localizable.
+If you enable localization in your Payload config, the plugin will automatically make text related template fields localizable.
 
 ### Preview
 
@@ -87,7 +87,7 @@ The template could be previewed in the `Preview` tab. You can also use the contr
 
 ### Generate Email Template
 
-You may need to trigger rendering the email tempalte by sending a POST request to the following endpoint:
+You may need to trigger rendering the email template by sending a POST request to the following endpoint:
 
 ```
 POST /api/email-templates/:id/generate
