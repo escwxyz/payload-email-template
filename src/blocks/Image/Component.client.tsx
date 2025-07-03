@@ -14,10 +14,6 @@ export const ImageBlockClient = ({
 }) => {
   const { image, width, height, objectFit, style } = block
 
-  console.log('image', image)
-
-  console.log('endpoint', `/api/${imageCollectionSlug}/${image}`)
-
   const [{ data, isError, isLoading }] = usePayloadAPI(`/api/${imageCollectionSlug}/${image}`)
 
   const imageUrl = data?.url

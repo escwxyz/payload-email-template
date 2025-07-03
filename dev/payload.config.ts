@@ -1,11 +1,11 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { MongoMemoryReplSet } from 'mongodb-memory-server'
-import path from 'path'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { buildConfig } from 'payload'
 import { emailTemplatePlugin } from 'payload-email-template'
 import sharp from 'sharp'
-import { fileURLToPath } from 'url'
 
 import { testEmailAdapter } from './helpers/testEmailAdapter.js'
 import { seed } from './seed.js'
@@ -18,16 +18,18 @@ if (!process.env.ROOT_DIR) {
 }
 
 const buildConfigWithMemoryDB = async () => {
-  const memoryDB = await MongoMemoryReplSet.create({
-    replSet: {
-      count: 3,
-      dbName: 'payloadmemory',
-    },
-  })
+  if (process.env.NODE_ENV === 'test') {
+    const memoryDB = await MongoMemoryReplSet.create({
+      replSet: {
+        count: 3,
+        dbName: 'payloadmemory',
+      },
+    })
 
-  await memoryDB.waitUntilRunning()
+    await memoryDB.waitUntilRunning()
 
-  process.env.DATABASE_URI = `${memoryDB.getUri()}&retryWrites=true`
+    process.env.DATABASE_URI = `${memoryDB.getUri()}&retryWrites=true`
+  }
 
   return buildConfig({
     admin: {
@@ -46,7 +48,7 @@ const buildConfigWithMemoryDB = async () => {
     ],
     db: mongooseAdapter({
       ensureIndexes: true,
-      url: process.env.DATABASE_URI,
+      url: process.env.DATABASE_URI || 'mongodb://127.0.0.1:27017/payload-email-template-test',
     }),
     editor: lexicalEditor(),
     email: testEmailAdapter,

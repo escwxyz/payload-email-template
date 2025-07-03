@@ -19,8 +19,6 @@ export type BlockRendererProps = {
 export const BlockRenderer = ({ block, previewMode }: BlockRendererProps) => {
   const imageCollectionSlug = getPluginConfig()?.imageCollectionSlug || 'media'
 
-  console.log('previewMode', previewMode)
-
   switch (block.blockType) {
     case 'section': {
       return <SectionBlock key={block.id} block={block} previewMode={previewMode} />

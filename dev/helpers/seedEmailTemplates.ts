@@ -22,7 +22,6 @@ export const seedEmailTemplates = async (payload: Payload) => {
   }
 
   if (!imageTotalDocs) {
-    console.log('seeding image...')
     await payload.create({
       collection: 'media',
       data: {},
