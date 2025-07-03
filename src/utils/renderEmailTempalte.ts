@@ -1,4 +1,4 @@
-import { render } from '@react-email/render'
+import { pretty, render } from '@react-email/render'
 import React from 'react'
 import { EmailTemplate } from '../blocks/EmailTemplate.js'
 import { getPluginConfig } from '../store.js'
@@ -10,11 +10,7 @@ export type RenderEmailTemplateProps = {
   format?: 'html' | 'plainText'
 }
 
-export const renderEmailTemplate = async ({
-  data,
-  locale = 'en',
-  format,
-}: RenderEmailTemplateProps) => {
+export const renderEmailTemplate = async ({ data, locale, format }: RenderEmailTemplateProps) => {
   const element = React.createElement(EmailTemplate, {
     data,
     locale,
@@ -29,5 +25,5 @@ export const renderEmailTemplate = async ({
 
   const injectedHtml = injectMacro(html, macros)
 
-  return injectedHtml
+  return await pretty(injectedHtml)
 }

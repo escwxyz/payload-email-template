@@ -4,7 +4,6 @@ import { ButtonBlock } from './Button/Component.js'
 import { ContainerBlock } from './Container/Component.js'
 import { HeadingBlock } from './Heading/Component.js'
 import { HrBlock } from './Hr/Component.js'
-import { ImageBlockClient } from './Image/Component.client.js'
 import { ImageBlockServer } from './Image/Component.server.js'
 import { LinkBlock } from './Link/Component.js'
 import { RowBlock } from './Row/Component.js'
@@ -53,6 +52,9 @@ export const BlockRenderer = ({ block, previewMode }: BlockRendererProps) => {
 
     case 'image': {
       if (previewMode === 'preview') {
+        // NOTE: this fix the css error when run pnpm run dev:generate-types or importmap
+        const ImageBlockClient = require('./Image/Component.client').ImageBlockClient
+
         return (
           <ImageBlockClient
             key={block.id}

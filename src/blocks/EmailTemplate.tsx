@@ -49,7 +49,7 @@ export const EmailTemplate = (props: EmailTemplateProps) => {
       ) : (
         <>
           <Html
-            {...(locale ? { lang: locale } : {})}
+            {...(locale ? { lang: locale } : { lang: 'en' })}
             style={{ margin: 0, padding: 0, boxSizing: 'border-box' }}
           >
             <Head>

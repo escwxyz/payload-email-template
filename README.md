@@ -74,14 +74,14 @@ export default buildConfig({
 
 ## ⚙️ Plugin Options
 
-| Option                | Type    | Default                 | Description                                                                 |
-| --------------------- | ------- | ----------------------- | --------------------------------------------------------------------------- |
-| `enabled`             | boolean | `true`                  | Enable/disable the plugin                                                   |
-| `imageCollectionSlug` | string  | `'media'`               | Collection slug for image uploads                                           |
-| `previewBreakpoints`  | array   | see example             | Device preview sizes for the preview tab                                    |
-| `macros`              | object  | `{}`                    | Default macros for template variables                                       |
-| `disableStyle`        | boolean | `false`                 | Disable custom style overrides                                              |
-| `endpointAccess`      | Access  | `({req}) => !!req.user` | Default access control for the `/api/email-templates/:id/generate` endpoint |
+| Option                | Type    | Default                        | Description                                                                 |
+| --------------------- | ------- | ------------------------------ | --------------------------------------------------------------------------- |
+| `enabled`             | boolean | `true`                         | Enable/disable the plugin                                                   |
+| `imageCollectionSlug` | string  | `'media'`                      | Collection slug for image uploads                                           |
+| `previewBreakpoints`  | array   | see example                    | Device preview sizes for the preview tab                                    |
+| `macros`              | object  | `{}`                           | Default macros for template variables                                       |
+| `disableStyle`        | boolean | `false`                        | Disable custom style overrides                                              |
+| `endpointAccess`      | Access  | `({req}) => Boolean(req.user)` | Default access control for the `/api/email-templates/:id/generate` endpoint |
 
 ---
 

@@ -20,16 +20,9 @@ export const ImageBlockClient = ({
 
   const [{ data, isError, isLoading }] = usePayloadAPI(`/api/${imageCollectionSlug}/${image}`)
 
-  console.log('data', data)
-
-  console.log('isError', isError)
-  console.log('isLoading', isLoading)
-
   const imageUrl = data?.url
 
   const isRemote = /^https?:\/\//.test(imageUrl || '')
-
-  console.log('imageUrl', imageUrl)
 
   const src = isRemote ? imageUrl || '' : `${window.location.origin}${imageUrl || ''}`
 
