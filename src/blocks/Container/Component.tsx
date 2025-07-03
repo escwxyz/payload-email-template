@@ -1,3 +1,5 @@
+// organize-imports-ignore
+import React from 'react'
 import { Container } from '@react-email/components'
 import type { ContainerBlock as ContainerBlockType, PreviewMode } from '../../types.js'
 import { BlockRenderer } from '../BlockRenderer.js'

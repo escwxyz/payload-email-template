@@ -1,3 +1,5 @@
+// organize-imports-ignore
+import React from 'react'
 import { Body, Font, Head, Html, Preview } from '@react-email/components'
 import { Block, FallbackFont, PreviewMode } from '../types.js'
 import type { RenderEmailTemplateProps } from '../utils/renderEmailTempalte.js'
@@ -14,21 +16,23 @@ export const EmailTemplate = (props: EmailTemplateProps) => {
 
   const body = data.body
 
+  const defaultBodyStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 0,
+    padding: 0,
+    boxSizing: 'border-box',
+    height: '100vh',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'auto',
+    ...style,
+  }
+
   return (
     <>
       {previewMode === 'preview' ? (
-        <div
-          style={{
-            margin: 0,
-            padding: 0,
-            boxSizing: 'border-box',
-            minHeight: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            ...style,
-          }}
-        >
+        <div style={defaultBodyStyle}>
           {body && Array.isArray(body) && body.length > 0 ? (
             body.map((block: Block) => BlockRenderer({ block, previewMode: 'preview' }))
           ) : (
@@ -66,18 +70,7 @@ export const EmailTemplate = (props: EmailTemplateProps) => {
               )}
               <title>{data?.title || 'Untitled Email'}</title>
             </Head>
-            <Body
-              style={{
-                margin: 0,
-                boxSizing: 'border-box',
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '16px',
-                ...style,
-              }}
-            >
+            <Body style={defaultBodyStyle}>
               <Preview>{data?.subject || 'Untitled Email'}</Preview>
               {body && Array.isArray(body) && body.length > 0 ? (
                 body.map((block: Block) => BlockRenderer({ block, previewMode: 'render' }))

@@ -2,10 +2,9 @@ import type { Block } from 'payload'
 import { textAlignment } from '../../fields/alignments.js'
 import { createStyleField } from '../../fields/style.js'
 import { getPluginConfig } from '../../store.js'
+import { createLinkBlock } from '../Link/config.js'
 
 export const createTextBlock = (): Block => {
-  const isLocalizationEnabled = getPluginConfig()?.isLocalizationEnabled
-
   return {
     slug: 'text',
     interfaceName: 'ReactEmailTextBlock',
@@ -14,11 +13,29 @@ export const createTextBlock = (): Block => {
     },
     fields: [
       {
-        name: 'text',
-        type: 'textarea',
-        label: 'Text',
+        name: 'content',
+        type: 'blocks',
+        label: 'Content',
         required: true,
-        localized: isLocalizationEnabled,
+        blocks: [
+          createLinkBlock(),
+          {
+            slug: 'plainText',
+            interfaceName: 'ReactEmailPlainTextBlock',
+            admin: {
+              group: 'React Email Components',
+            },
+            fields: [
+              {
+                name: 'content',
+                type: 'textarea',
+                label: 'Content',
+                required: true,
+                localized: getPluginConfig()?.isLocalizationEnabled,
+              },
+            ],
+          },
+        ],
       },
       {
         type: 'collapsible',
@@ -34,14 +51,15 @@ export const createTextBlock = (): Block => {
               {
                 name: 'fontSize',
                 type: 'select',
+                label: 'Font Size',
                 options: [
-                  { label: '12px', value: '12px' },
-                  { label: '14px', value: '14px' },
-                  { label: '16px', value: '16px' },
-                  { label: '18px', value: '18px' },
-                  { label: '20px', value: '20px' },
+                  { label: '12px', value: '0.75rem' },
+                  { label: '14px', value: '0.875rem' },
+                  { label: '16px', value: '1rem' },
+                  { label: '18px', value: '1.125rem' },
+                  { label: '20px', value: '1.25rem' },
                 ],
-                defaultValue: '16px',
+                defaultValue: '1rem',
               },
               textAlignment,
             ],
@@ -49,6 +67,7 @@ export const createTextBlock = (): Block => {
           {
             name: 'color',
             type: 'text',
+            label: 'Color',
             defaultValue: '#000000',
           },
 

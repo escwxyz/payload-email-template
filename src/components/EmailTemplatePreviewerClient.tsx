@@ -1,5 +1,6 @@
 'use client'
-
+// organize-imports-ignore
+import React from 'react'
 import { Button, TextInput, useAllFormFields, useLocale } from '@payloadcms/ui'
 import { reduceFieldsToValues } from 'payload/shared'
 import { useEffect, useRef, useState } from 'react'
@@ -50,8 +51,6 @@ export const EmailTemplatePreviewerClient = ({
 
   const [plainText, setPlainText] = useState<string | null>(null)
 
-  // const [{ data, isError, isLoading }] = usePayloadAPI(`/api/${config.imageCollectionSlug}`)
-
   const [fields] = useAllFormFields()
 
   const formData = reduceFieldsToValues(fields, true)
@@ -65,8 +64,6 @@ export const EmailTemplatePreviewerClient = ({
   const dragStart = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 })
 
   const locale = useLocale()
-
-  const macros = config.macros
 
   useEffect(() => {
     const generateEmailTemplate = async () => {
@@ -137,7 +134,7 @@ export const EmailTemplatePreviewerClient = ({
           readOnly
           path="subject"
           label="Email Subject"
-          value={injectMacro(formData.subject || 'Untitled', macros)}
+          value={injectMacro(formData.subject || 'Untitled', config.macros)}
         />
       </div>
       <div className={styles.controllers}>
@@ -145,10 +142,14 @@ export const EmailTemplatePreviewerClient = ({
           {mode.toUpperCase()}
         </Button>
 
-        <Button onClick={handleNextBreakpoint} buttonStyle="primary">
+        <Button
+          onClick={handleNextBreakpoint}
+          buttonStyle="primary"
+          disabled={mode === 'plainText'}
+        >
           {selectedBreakpoint.label}
         </Button>
-        <Button onClick={handleNextZoom} buttonStyle="primary">
+        <Button onClick={handleNextZoom} buttonStyle="primary" disabled={mode === 'plainText'}>
           {Math.round(zoom * 100)}%
         </Button>
       </div>

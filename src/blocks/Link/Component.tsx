@@ -1,8 +1,12 @@
+// organize-imports-ignore
+import React from 'react'
 import { Link } from '@react-email/components'
 import type { LinkBlock as LinkBlockType } from '../../types.js'
+import { injectMacro } from '../../utils/injectMacro.js'
+import { getPluginConfig } from '../../store.js'
 
 export const LinkBlock = ({ block }: { block: LinkBlockType }) => {
-  const { url, target, text, color, underline } = block
+  const { url, target, text, color, underline, style } = block
 
   return (
     <Link
@@ -11,9 +15,10 @@ export const LinkBlock = ({ block }: { block: LinkBlockType }) => {
       style={{
         ...(color ? { color } : {}),
         textDecoration: underline ? 'underline' : 'none',
+        ...style,
       }}
     >
-      {text}
+      {injectMacro(text, getPluginConfig()?.macros)}
     </Link>
   )
 }

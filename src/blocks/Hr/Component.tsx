@@ -1,3 +1,5 @@
+// organize-imports-ignore
+import React from 'react'
 import { Hr } from '@react-email/components'
 import type { HrBlock as HrBlockType } from '../../types.js'
 

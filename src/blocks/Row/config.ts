@@ -25,6 +25,7 @@ export const createRowBlock = (): Block => {
         fields: [
           {
             name: 'content',
+            label: 'Content',
             type: 'blocks',
             blocks: [
               createTextBlock(),
@@ -45,6 +46,7 @@ export const createRowBlock = (): Block => {
             fields: [
               {
                 name: 'width',
+                label: 'Width',
                 type: 'select',
                 options: ['1/4', '1/3', '1/2', '2/3', '3/4', 'full'],
                 defaultValue: 'full',

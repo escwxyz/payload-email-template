@@ -1,3 +1,5 @@
+// organize-imports-ignore
+import React from 'react'
 import { getPluginConfig } from '../store.js'
 import { EmailTemplatePreviewerClient } from './EmailTemplatePreviewerClient.js'
 

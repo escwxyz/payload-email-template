@@ -1,5 +1,6 @@
 'use client'
-
+// organize-imports-ignore
+import React from 'react'
 import { usePayloadAPI } from '@payloadcms/ui'
 import { Img } from '@react-email/components'
 import type { UploadCollectionSlug } from 'payload'

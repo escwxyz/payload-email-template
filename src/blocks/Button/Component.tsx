@@ -1,5 +1,9 @@
+// organize-imports-ignore
+import React from 'react'
 import { Button } from '@react-email/components'
 import type { ButtonBlock as ButtonBlockType } from '../../types.js'
+import { injectMacro } from '../../utils/injectMacro.js'
+import { getPluginConfig } from '../../store.js'
 
 export const ButtonBlock = ({ block }: { block: ButtonBlockType }) => {
   const {
@@ -61,7 +65,7 @@ export const ButtonBlock = ({ block }: { block: ButtonBlockType }) => {
 
   return (
     <Button href={url} style={mergedStyle} target={target}>
-      {text}
+      {injectMacro(text, getPluginConfig()?.macros)}
     </Button>
   )
 }

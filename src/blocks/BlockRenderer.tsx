@@ -1,3 +1,5 @@
+// organize-imports-ignore
+import React from 'react'
 import { getPluginConfig } from '../store.js'
 import type { Block, PreviewMode } from '../types.js'
 import { ButtonBlock } from './Button/Component.js'

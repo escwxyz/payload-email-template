@@ -20,6 +20,7 @@ export interface LinkBlock extends GenericBlock {
   target?: '_blank' | '_self' | '_parent' | '_top'
   color?: string
   underline?: boolean
+  style?: React.CSSProperties
 }
 
 export interface SpacerBlock extends GenericBlock {
@@ -35,9 +36,14 @@ export interface HeadingBlock extends GenericBlock {
   style?: React.CSSProperties
 }
 
+export interface PlainTextBlock extends GenericBlock {
+  blockType: 'plainText'
+  content: string
+}
+
 export interface TextBlock extends GenericBlock {
-  text: string
-  fontSize?: '12px' | '14px' | '16px' | '18px' | '20px'
+  content: (PlainTextBlock | LinkBlock)[]
+  fontSize?: '0.75rem' | '0.875rem' | '1rem' | '1.125rem' | '1.25rem'
   textAlign?: 'left' | 'center' | 'right'
   color?: string | null
   lineHeight?: '1.2' | '1.4' | '1.6' | '1.8'
@@ -78,6 +84,7 @@ export interface RowBlock extends GenericBlock {
     verticalAlign?: 'top' | 'center' | 'bottom' | null
     style?: React.CSSProperties
   }[]
+  style?: React.CSSProperties
 }
 
 export interface ImageBlock<T extends UploadCollectionSlug = 'media'> extends GenericBlock {

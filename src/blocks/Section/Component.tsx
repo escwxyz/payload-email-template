@@ -1,3 +1,5 @@
+// organize-imports-ignore
+import React from 'react'
 import { Section } from '@react-email/components'
 import type { Block, PreviewMode, SectionBlock as SectionBlockType } from '../../types.js'
 import { BlockRenderer } from '../BlockRenderer.js'

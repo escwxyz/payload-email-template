@@ -1,6 +1,5 @@
 import { APIError, PayloadHandler } from 'payload'
 import { getPluginConfig } from '../store.js'
-import { injectMacro } from '../utils/injectMacro.js'
 import { renderEmailTemplate } from '../utils/renderEmailTempalte.js'
 
 export const generate: PayloadHandler = async (req) => {
@@ -51,15 +50,9 @@ export const generate: PayloadHandler = async (req) => {
       }),
     ])
 
-    const macros = getPluginConfig()?.macros
-
-    const finalHtml = injectMacro(html, macros)
-
-    const finalPlainText = injectMacro(plainText, macros)
-
     return Response.json({
-      html: finalHtml,
-      plainText: finalPlainText,
+      html,
+      plainText,
     })
   } catch (error) {
     if (process.env.NODE_ENV !== 'production') {

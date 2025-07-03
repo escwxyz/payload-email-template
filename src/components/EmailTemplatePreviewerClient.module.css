@@ -44,16 +44,7 @@
   box-shadow: 0 2px 8px var(--theme-elevation-50);
   border: 1px solid var(--theme-border-color);
   transform-origin: center center;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  pointer-events: none;
-  background: var(--theme-elevation-50);
+  /* overflow: hidden; */
 }
 
 .plainText {

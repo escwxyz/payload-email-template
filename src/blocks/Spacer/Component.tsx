@@ -1,3 +1,5 @@
+// organize-imports-ignore
+import React from 'react'
 import { SpacerBlock as SpacerBlockType } from '../../types.js'
 
 export const SpacerBlock = ({ block }: { block: SpacerBlockType }) => {

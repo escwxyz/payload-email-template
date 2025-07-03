@@ -1,7 +1,8 @@
 import type { Block } from 'payload'
 import { createStyleField } from '../../fields/style.js'
 import { createButtonBlock } from '../Button/config.js'
-import { createHrBlock } from '../Hr/config.js'
+import { createHeadingBlock } from '../Heading/config.js'
+import { HrBlock } from '../Hr/config.js'
 import { ImageBlock } from '../Image/config.js'
 import { createLinkBlock } from '../Link/config.js'
 import { createRowBlock } from '../Row/config.js'
@@ -21,11 +22,12 @@ export const createSectionBlock = (): Block => {
         type: 'blocks',
         blocks: [
           createRowBlock(),
+          createHeadingBlock(),
           ImageBlock,
           createButtonBlock(),
           createTextBlock(),
           createLinkBlock(),
-          createHrBlock(),
+          HrBlock,
           SpacerBlock,
         ],
       },
@@ -35,6 +37,7 @@ export const createSectionBlock = (): Block => {
         admin: {
           description: 'CSS color value (e.g., #ffffff, rgba(255,255,255,0.9))',
         },
+        defaultValue: '#ffffff',
       },
       {
         name: 'padding',

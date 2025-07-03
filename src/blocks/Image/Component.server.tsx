@@ -1,3 +1,6 @@
+// organize-imports-ignore
+import React from 'react'
+
 import { Img } from '@react-email/components'
 
 import type { ImageBlock as ImageBlockType } from '../../types.js'
