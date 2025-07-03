@@ -25,5 +25,5 @@ export const renderEmailTemplate = async ({ data, locale, format }: RenderEmailT
 
   const injectedHtml = injectMacro(html, macros)
 
-  return await pretty(injectedHtml)
+  return format === 'plainText' ? injectedHtml : await pretty(injectedHtml)
 }
