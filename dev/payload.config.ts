@@ -18,15 +18,16 @@ if (!process.env.ROOT_DIR) {
 }
 
 const buildConfigWithMemoryDB = async () => {
-  if (process.env.NODE_ENV === 'test') {
-    const memoryDB = await MongoMemoryReplSet.create({
-      replSet: {
-        count: 3,
-        dbName: 'payloadmemory',
-      },
-    })
-    process.env.DATABASE_URI = `${memoryDB.getUri()}&retryWrites=true`
-  }
+  const memoryDB = await MongoMemoryReplSet.create({
+    replSet: {
+      count: 3,
+      dbName: 'payloadmemory',
+    },
+  })
+
+  await memoryDB.waitUntilRunning()
+
+  process.env.DATABASE_URI = `${memoryDB.getUri()}&retryWrites=true`
 
   return buildConfig({
     admin: {
@@ -45,17 +46,17 @@ const buildConfigWithMemoryDB = async () => {
     ],
     db: mongooseAdapter({
       ensureIndexes: true,
-      url: process.env.DATABASE_URI || '',
+      url: process.env.DATABASE_URI,
     }),
     editor: lexicalEditor(),
     email: testEmailAdapter,
     onInit: async (payload) => {
       await seed(payload)
     },
-    // localization: {
-    //   locales: ['en', 'zh'],
-    //   defaultLocale: 'en',
-    // },
+    localization: {
+      locales: ['en', 'zh'],
+      defaultLocale: 'en',
+    },
     plugins: [
       emailTemplatePlugin({
         imageCollectionSlug: 'media',
