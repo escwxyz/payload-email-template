@@ -16,7 +16,7 @@ export const createLinkBlock = (): Block => {
         type: 'text',
         label: 'Link Text',
         required: true,
-        ...(isLocalizationEnabled ? { localized: true } : {}),
+        localized: isLocalizationEnabled,
       },
       {
         name: 'url',

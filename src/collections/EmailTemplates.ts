@@ -55,13 +55,13 @@ export const createEmailTemplatesCollection = (): CollectionConfig => {
                     type: 'text',
                     required: true,
                     label: 'Template Name',
-                    ...(pluginConfig?.isLocalizationEnabled ? { localized: true } : {}),
+                    unique: true,
                   },
                   {
                     name: 'description',
                     type: 'text',
                     label: 'Description',
-                    ...(pluginConfig?.isLocalizationEnabled ? { localized: true } : {}),
+                    localized: pluginConfig?.isLocalizationEnabled,
                   },
                 ],
               },
@@ -70,7 +70,7 @@ export const createEmailTemplatesCollection = (): CollectionConfig => {
                 type: 'text',
                 label: 'Email Subject',
                 required: true,
-                ...(pluginConfig?.isLocalizationEnabled ? { localized: true } : {}),
+                localized: pluginConfig?.isLocalizationEnabled,
               },
               {
                 label: 'Head',
@@ -84,7 +84,7 @@ export const createEmailTemplatesCollection = (): CollectionConfig => {
                     name: 'title',
                     label: 'Title',
                     type: 'text',
-                    ...(pluginConfig?.isLocalizationEnabled ? { localized: true } : {}),
+                    localized: pluginConfig?.isLocalizationEnabled,
                   },
                   {
                     type: 'collapsible',

@@ -22,7 +22,7 @@ export const createButtonBlock = (): Block => {
         type: 'text',
         label: 'Button Text',
         required: true,
-        ...(isLocalizationEnabled ? { localized: true } : {}),
+        localized: isLocalizationEnabled,
       },
       {
         name: 'url',

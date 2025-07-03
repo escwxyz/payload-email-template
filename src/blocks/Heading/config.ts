@@ -17,7 +17,7 @@ export const createHeadingBlock = (): Block => {
         name: 'content',
         type: 'text',
         required: true,
-        ...(isLocalizationEnabled ? { localized: true } : {}),
+        localized: isLocalizationEnabled,
       },
       {
         name: 'level',

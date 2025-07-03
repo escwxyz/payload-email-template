@@ -18,7 +18,7 @@ export const createTextBlock = (): Block => {
         type: 'textarea',
         label: 'Text',
         required: true,
-        ...(isLocalizationEnabled ? { localized: true } : {}),
+        localized: isLocalizationEnabled,
       },
       {
         type: 'collapsible',

@@ -25,7 +25,7 @@ export const emailTemplatePlugin =
       name: 'alt',
       label: 'Alt Text',
       type: 'text',
-      ...(isLocalizationEnabled ? { localized: true } : {}),
+      localized: isLocalizationEnabled,
     })
 
     ImageBlock.fields.unshift({
