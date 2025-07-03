@@ -95,10 +95,10 @@ export const EmailTemplatePreviewerClient = ({
         <body>
           <h2>⚠️ Preview Error</h2>
           <p>Unable to generate email preview.</p>
-          <details>
-            <summary>Error Details</summary>
+          <div>
+            <h3>Error Details</h3>
             <pre>${error instanceof Error ? error.message : 'Unknown error'}</pre>
-          </details>
+          </div>
         </body>
         </html>
       `

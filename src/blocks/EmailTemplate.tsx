@@ -10,7 +10,7 @@ export const EmailTemplate = (props: EmailTemplateProps) => {
 
   const { fontFamily, fallbackFontFamily, webFont, fontWeight, fontStyle, style } = data
 
-  const bodyBlocks = data.body?.map((block: Block) => BlockRenderer({ block }))
+  const body = data.body
 
   return (
     <Html
@@ -44,7 +44,9 @@ export const EmailTemplate = (props: EmailTemplateProps) => {
         }}
       >
         <Preview>{data?.subject || 'Untitled Email'}</Preview>
-        {bodyBlocks || (
+        {body && Array.isArray(body) && body.length > 0 ? (
+          body.map((block: Block) => BlockRenderer({ block }))
+        ) : (
           <div
             style={{
               padding: '60px 20px',
