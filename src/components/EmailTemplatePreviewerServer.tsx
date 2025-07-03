@@ -8,6 +8,7 @@ export const EmailTemplatePreviewerServer = () => {
       config={{
         macros: config?.macros,
         previewBreakpoints: config?.previewBreakpoints,
+        imageCollectionSlug: config?.imageCollectionSlug,
       }}
     />
   )

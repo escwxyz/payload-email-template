@@ -6,15 +6,6 @@ import type {
   UploadCollectionSlug,
 } from 'payload'
 
-export type BlockConfig = {
-  isLocalizationEnabled: boolean
-  imageCollectionSlug: UploadCollectionSlug
-}
-
-export type LocalizationConfig = {
-  isLocalizationEnabled: boolean
-}
-
 export interface GenericBlock {
   blockType: string
   id?: string | null
@@ -91,7 +82,7 @@ export interface RowBlock extends GenericBlock {
 
 export interface ImageBlock<T extends UploadCollectionSlug = 'media'> extends GenericBlock {
   blockType: 'image'
-  image: DataFromCollectionSlug<T>
+  image: string | DataFromCollectionSlug<T>
   alt?: string
   width?: number | null
   height?: number | null
@@ -176,3 +167,6 @@ export type PluginOptions = {
   // TODO: allow user to override
   collectionConfig?: Omit<CollectionConfig<'email-templates'>, 'slug' | 'fields' | 'endpoints'>
 }
+
+export type RenderMode = 'html' | 'plainText'
+export type PreviewMode = 'preview' | 'render'

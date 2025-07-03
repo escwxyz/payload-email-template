@@ -104,7 +104,7 @@ export const createEmailTemplatesCollection = (): CollectionConfig => {
                           description: 'Please input only one font family here.',
                         },
                         required: true,
-                        defaultValue: 'Arial',
+                        defaultValue: ['Arial'],
                       },
                       {
                         name: 'fallbackFontFamily',

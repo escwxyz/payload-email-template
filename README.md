@@ -1,19 +1,27 @@
-# Payload Email Template Plugin
+# Payload Email Template Plugin 🚀
 
-A Payload CMS plugin to build email template based on React Email.
+[![npm version](https://img.shields.io/npm/v/payload-email-template.svg?style=flat-square)](https://www.npmjs.com/package/payload-email-template)
+[![npm downloads](https://img.shields.io/npm/dm/payload-email-template.svg?style=flat-square)](https://www.npmjs.com/package/payload-email-template)
+[![MIT License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)](LICENSE)
 
-## Features
+---
 
-- Visual, block-based email template builder (no raw JSX required)
-- Custom blocks: Heading, Button, Container, Image, Row, Section, Text, and more
-- Preview: See your email as you build, with device and zoom controls
-- Localization: Localize templates and content
-- Macros: Use dynamic variables in subject and body (e.g., {{userName}})
-- API endpoints: Expose an endpoint to generate both HTML and PlainText before sending your email
+A powerful, visual, and block-based email template builder plugin for [Payload CMS](https://payloadcms.com/) — built on top of [React Email](https://react.email/). Design beautiful, dynamic, and localized email templates with ease! ✨
 
-## Installation
+---
 
-To install the plugin, run one of the following commands:
+## ✨ Features
+
+- 🧩 **Visual, block-based email template builder** (no raw JSX required)
+- 🏗️ **Custom blocks:** Heading, Button, Container, Image, Row, Section, Text, and more
+- 👀 **Preview:** See your email as you build, with device and zoom controls
+- 🌍 **Localization:** Localize templates and content
+- 🪄 **Macros:** Use dynamic variables in subject and body (e.g., `{{userName}}`)
+- 🔌 **API endpoints:** Generate both HTML and PlainText before sending your email
+
+---
+
+## 📦 Installation
 
 ```bash
 pnpm add payload-email-template
@@ -23,7 +31,11 @@ yarn add payload-email-template
 npm install payload-email-template
 ```
 
-Then simply add it to your Payload config in the `plugins` array:
+---
+
+## 🚀 Getting Started
+
+Add the plugin to your Payload config in the `plugins` array:
 
 ```ts
 import { emailTemplatePlugin } from 'payload-email-template'
@@ -43,57 +55,73 @@ export default buildConfig({
         companyName: 'Example Inc.',
         // ...add your default macros here
       },
-      disableStyle: false, // (optional) allow custom style overrides, default: true
+      disableStyle: false, // (optional) allow custom style overrides, default: false
       // ...other options
     }),
   ],
 })
 ```
 
-## Plugin Options
+---
 
-| Option              | Type    | Default               | Description                                                                 |
-| ------------------- | ------- | --------------------- | --------------------------------------------------------------------------- |
-| enabled             | boolean | true                  | Enable/disable the plugin                                                   |
-| imageCollectionSlug | string  | 'media'               | Collection slug for image uploads                                           |
-| previewBreakpoints  | array   | see above             | Device preview sizes for the preview tab                                    |
-| macros              | object  | {}                    | Default macros for template variables                                       |
-| disableStyle        | boolean | false                 | Disable custom style overrides                                              |
-| endpointAccess      | Access  | ({req}) => !!req.user | Default access control for the `/api/email-templates/:id/generate` endpoint |
+## 🖼️ Demo
 
-## Usage
+> _Coming soon!_
+>
+> ![Demo Screenshot](https://placehold.co/800x400?text=Email+Template+Builder+Demo)
 
-### Blocks
+---
 
-Config blocks (Heading, Button, Container, etc.) to build your template.
-Each block has configurable fields (content, style, alignment, etc.).
-Blocks can be nested for complex layouts.
+## ⚙️ Plugin Options
 
-### Macros
+| Option                | Type    | Default                 | Description                                                                 |
+| --------------------- | ------- | ----------------------- | --------------------------------------------------------------------------- |
+| `enabled`             | boolean | `true`                  | Enable/disable the plugin                                                   |
+| `imageCollectionSlug` | string  | `'media'`               | Collection slug for image uploads                                           |
+| `previewBreakpoints`  | array   | see example             | Device preview sizes for the preview tab                                    |
+| `macros`              | object  | `{}`                    | Default macros for template variables                                       |
+| `disableStyle`        | boolean | `false`                 | Disable custom style overrides                                              |
+| `endpointAccess`      | Access  | `({req}) => !!req.user` | Default access control for the `/api/email-templates/:id/generate` endpoint |
+
+---
+
+## 🛠️ Usage
+
+### 🧱 Blocks
+
+Configure blocks (Heading, Button, Container, etc.) to build your template. Each block has configurable fields (content, style, alignment, etc.). Blocks can be nested for complex layouts.
+
+### 🪄 Macros
 
 Use double curly braces to insert variables:
-Example: Hello {{userName}}
+
+```txt
+Hello {{userName}}
+```
+
 Macros are replaced at render time using the values from your config or API call.
 
-### Localization
+### 🌍 Localization
 
-If you enable localization in your Payload config, the plugin will automatically make text related template fields localizable.
+If you enable localization in your Payload config, the plugin will automatically make text-related template fields localizable.
 
-### Preview
+### 👀 Preview
 
-The template could be previewed in the `Preview` tab. You can also use the controls to toggle mode, device and zoom.
+The template can be previewed in the `Preview` tab. You can also use the controls to toggle mode, device, and zoom.
 
-## API Endpoints
+---
+
+## 🔌 API Endpoints
 
 ### Generate Email Template
 
-You may need to trigger rendering the email template by sending a POST request to the following endpoint:
+You can trigger rendering the email template by sending a POST request to the following endpoint:
 
 ```
 POST /api/email-templates/:id/generate
 ```
 
-You will receive both `Html` and `PlainText` versions of the template.
+You will receive both `html` and `plainText` versions of the template:
 
 ```json
 {
@@ -102,12 +130,16 @@ You will receive both `Html` and `PlainText` versions of the template.
 }
 ```
 
-Then you could send it via your email provider.
+Then you can send it via your email provider.
 
-## Contributing
+---
+
+## 🤝 Contributing
 
 Contributions are welcome! Please open issues or pull requests for bug fixes, features, or documentation improvements.
 
-## License
+---
+
+## 📄 License
 
 [MIT](/LICENSE)

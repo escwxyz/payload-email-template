@@ -18,6 +18,7 @@ export const renderEmailTemplate = async ({
   const element = React.createElement(EmailTemplate, {
     data,
     locale,
+    previewMode: 'render',
   })
 
   const html = await render(element, { plainText: format === 'plainText' })
