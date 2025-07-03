@@ -2,7 +2,6 @@ import type { Payload } from 'payload'
 
 import { createPayloadRequest, getPayload } from 'payload'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { seedEmailTemplates } from '../dev/helpers/seedEmailTemplates.js'
 import type { EmailTemplate } from '../dev/payload-types.js'
 import config from '../dev/payload.config.js'
 import { generate } from '../src/endpoints/generate.js'
@@ -18,11 +17,19 @@ afterAll(async () => {
 beforeAll(async () => {
   payload = await getPayload({ config })
 
-  const emailTemplate = await seedEmailTemplates(payload)
+  const emailTemplate = await payload.find({
+    collection: 'email-templates',
+    where: {
+      name: {
+        equals: 'Demo Email Template',
+      },
+    },
+    limit: 1,
+  })
 
-  demoEmailTemplate = emailTemplate
+  demoEmailTemplate = emailTemplate.docs[0]
 
-  console.log('Demo email template seeded.')
+  console.log('Demo email template:', demoEmailTemplate?.id)
 })
 
 describe('Plugin integration tests', () => {

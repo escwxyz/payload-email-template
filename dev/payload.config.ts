@@ -7,6 +7,7 @@ import { buildConfig } from 'payload'
 import { emailTemplatePlugin } from 'payload-email-template'
 import sharp from 'sharp'
 
+import { seedEmailTemplates } from 'helpers/seedEmailTemplates.js'
 import { testEmailAdapter } from './helpers/testEmailAdapter.js'
 import { seed } from './seed.js'
 
@@ -18,7 +19,7 @@ if (!process.env.ROOT_DIR) {
 }
 
 const buildConfigWithMemoryDB = async () => {
-  if (process.env.NODE_ENV === 'test') {
+  if (process.env.CI === 'true') {
     const memoryDB = await MongoMemoryReplSet.create({
       replSet: {
         count: 3,
@@ -54,6 +55,7 @@ const buildConfigWithMemoryDB = async () => {
     email: testEmailAdapter,
     onInit: async (payload) => {
       await seed(payload)
+      await seedEmailTemplates(payload)
     },
     localization: {
       locales: ['en', 'zh'],
