@@ -78,7 +78,7 @@
     "copyfiles": "2.4.1",
     "cross-env": "^7.0.3",
     "eslint": "^9.23.0",
-    "eslint-config-next": "15.3.0",
+    "eslint-config-next": "15.3.5",
     "graphql": "^16.8.1",
     "mongodb-memory-server": "10.1.4",
     "next": "15.3.0",
