@@ -2,8 +2,9 @@ name: Check
 
 on:
   workflow_call:
+
 jobs:
-  cache-and-install:
+  check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,7 +20,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Format Code and Check for errors
         run: pnpm run format:check
