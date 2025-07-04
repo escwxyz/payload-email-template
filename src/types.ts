@@ -1,6 +1,5 @@
 import type {
   Access,
-  CollectionConfig,
   DataFromCollectionSlug,
   LivePreviewConfig,
   UploadCollectionSlug,
@@ -173,7 +172,7 @@ export type PluginOptions = {
    */
   endpointAccess?: Access
   // TODO: allow user to override
-  collectionConfig?: Omit<CollectionConfig<'email-templates'>, 'slug' | 'fields' | 'endpoints'>
+  // collectionConfig?: Omit<CollectionConfig<'email-templates'>, 'slug' | 'fields' | 'endpoints'>
 }
 
 export type BlockRendererServerProps = {
@@ -188,3 +187,16 @@ export type BlockRendererClientProps = {
 export type ServerBlockComponent = React.ComponentType<BlockRendererServerProps>
 
 export type ClientBlockComponent = React.ComponentType<BlockRendererClientProps>
+
+export type EnvBlocksMap = {
+  section: ServerBlockComponent | ClientBlockComponent
+  container: ServerBlockComponent | ClientBlockComponent
+  row: ServerBlockComponent | ClientBlockComponent
+  image: ServerBlockComponent | ClientBlockComponent
+  spacer: ServerBlockComponent
+  heading: ServerBlockComponent
+  hr: ServerBlockComponent
+  link: ServerBlockComponent
+  text: ServerBlockComponent
+  button: ServerBlockComponent
+}

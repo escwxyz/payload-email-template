@@ -226,6 +226,7 @@ export interface ReactEmailSectionBlock {
   content?:
     | (
         | ReactEmailRowBlock
+        | ReactEmailHeadingBlock
         | ReactEmailImageBlock
         | ReactEmailButtonBlock
         | ReactEmailTextBlock
@@ -311,8 +312,8 @@ export interface ReactEmailRowBlock {
  * via the `definition` "ReactEmailTextBlock".
  */
 export interface ReactEmailTextBlock {
-  text: string;
-  fontSize?: ('12px' | '14px' | '16px' | '18px' | '20px') | null;
+  content: (ReactEmailLinkBlock | ReactEmailPlainTextBlock)[];
+  fontSize?: ('0.75rem' | '0.875rem' | '1rem' | '1.125rem' | '1.25rem') | null;
   textAlign?: ('left' | 'center' | 'right') | null;
   color?: string | null;
   lineHeight?: ('1.2' | '1.4' | '1.6' | '1.8') | null;
@@ -331,6 +332,42 @@ export interface ReactEmailTextBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'text';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReactEmailLinkBlock".
+ */
+export interface ReactEmailLinkBlock {
+  text: string;
+  url: string;
+  target?: ('_self' | '_blank') | null;
+  color?: string | null;
+  underline?: boolean | null;
+  /**
+   * Additional custom style object to override the default styles, e.g. { "backgroundColor": "#333" }
+   */
+  style?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'link';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReactEmailPlainTextBlock".
+ */
+export interface ReactEmailPlainTextBlock {
+  content: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'plainText';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -391,6 +428,9 @@ export interface ReactEmailHeadingBlock {
  * via the `definition` "ReactEmailImageBlock".
  */
 export interface ReactEmailImageBlock {
+  /**
+   * The image to display in the email template.
+   */
   image?: (string | null) | Media;
   alt?: string | null;
   /**
@@ -418,20 +458,6 @@ export interface ReactEmailImageBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'image';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ReactEmailLinkBlock".
- */
-export interface ReactEmailLinkBlock {
-  text: string;
-  url: string;
-  target?: ('_self' | '_blank') | null;
-  color?: string | null;
-  underline?: boolean | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'link';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -628,6 +654,7 @@ export interface ReactEmailSectionBlockSelect<T extends boolean = true> {
     | T
     | {
         row?: T | ReactEmailRowBlockSelect<T>;
+        heading?: T | ReactEmailHeadingBlockSelect<T>;
         image?: T | ReactEmailImageBlockSelect<T>;
         button?: T | ReactEmailButtonBlockSelect<T>;
         text?: T | ReactEmailTextBlockSelect<T>;
@@ -674,12 +701,40 @@ export interface ReactEmailRowBlockSelect<T extends boolean = true> {
  * via the `definition` "ReactEmailTextBlock_select".
  */
 export interface ReactEmailTextBlockSelect<T extends boolean = true> {
-  text?: T;
+  content?:
+    | T
+    | {
+        link?: T | ReactEmailLinkBlockSelect<T>;
+        plainText?: T | ReactEmailPlainTextBlockSelect<T>;
+      };
   fontSize?: T;
   textAlign?: T;
   color?: T;
   lineHeight?: T;
   style?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReactEmailLinkBlock_select".
+ */
+export interface ReactEmailLinkBlockSelect<T extends boolean = true> {
+  text?: T;
+  url?: T;
+  target?: T;
+  color?: T;
+  underline?: T;
+  style?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReactEmailPlainTextBlock_select".
+ */
+export interface ReactEmailPlainTextBlockSelect<T extends boolean = true> {
+  content?: T;
   id?: T;
   blockName?: T;
 }
@@ -725,19 +780,6 @@ export interface ReactEmailImageBlockSelect<T extends boolean = true> {
   objectFit?: T;
   align?: T;
   style?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ReactEmailLinkBlock_select".
- */
-export interface ReactEmailLinkBlockSelect<T extends boolean = true> {
-  text?: T;
-  url?: T;
-  target?: T;
-  color?: T;
-  underline?: T;
   id?: T;
   blockName?: T;
 }

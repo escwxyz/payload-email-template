@@ -2,7 +2,7 @@
 import React from 'react'
 import { BlockRendererServerProps } from '../../types.js'
 import { Column, Row } from '@react-email/components'
-import { BlockRendererServer } from '../../components/BlockRendererFactory.js'
+import { BlockRendererServer } from '../../components/BlockRenderer/BlockRendererServer.js'
 
 export const RowBlockServer = (props: BlockRendererServerProps) => {
   const { block, previewMode } = props

@@ -2,7 +2,7 @@
 // organize-imports-ignore
 import React from 'react'
 import { BlockRendererClientProps } from '../../types.js'
-import { BlockRendererClient } from '../../components/BlockRendererFactory.js'
+import { BlockRendererClient } from '../../components/BlockRenderer/BlockRendererClient.js'
 import { Container } from '@react-email/components'
 
 export const ContainerBlockClient = (props: BlockRendererClientProps) => {

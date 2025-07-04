@@ -3,10 +3,9 @@ import React from 'react'
 import { Body, Font, Head, Html, Preview } from '@react-email/components'
 import type { RenderEmailTemplateProps } from '../utils/renderEmailTempalte.js'
 import { Block, FallbackFont } from '../types.js'
-import styles from './EmailTemplate.module.css'
 
 import { EmailTemplatePlaceholder } from './EmailTemplatePlaceholder.js'
-import { BlockRendererServer } from './BlockRendererFactory.js'
+import { BlockRendererServer } from './BlockRenderer/BlockRendererServer.js'
 
 export const EmailTemplateServer = (props: Omit<RenderEmailTemplateProps, 'format'>) => {
   const { data, locale } = props
@@ -14,6 +13,18 @@ export const EmailTemplateServer = (props: Omit<RenderEmailTemplateProps, 'forma
   const { fontFamily, fallbackFontFamily, webFont, fontWeight, fontStyle, style } = data
 
   const body = data.body
+
+  const defaultStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 0,
+    padding: 0,
+    boxSizing: 'border-box',
+    height: '100vh',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'auto',
+  }
 
   return (
     <Html
@@ -34,7 +45,12 @@ export const EmailTemplateServer = (props: Omit<RenderEmailTemplateProps, 'forma
         )}
         <title>{data?.title || 'Untitled Email'}</title>
       </Head>
-      <Body className={styles.defaultBodyStyle} style={style}>
+      <Body
+        style={{
+          ...defaultStyle,
+          ...style,
+        }}
+      >
         <Preview>{data?.subject || 'Untitled Email'}</Preview>
         {body && Array.isArray(body) && body.length > 0 ? (
           body.map((block: Block) => BlockRendererServer({ block, previewMode: 'render' }))

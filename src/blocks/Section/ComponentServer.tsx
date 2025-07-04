@@ -3,7 +3,7 @@ import React from 'react'
 import { BlockRendererServerProps } from '../../types.js'
 import { Section } from '@react-email/components'
 import type { Block } from '../../types.js'
-import { BlockRendererServer } from '../../components/BlockRendererFactory.js'
+import { BlockRendererServer } from '../../components/BlockRenderer/BlockRendererServer.js'
 
 export const SectionBlockServer = (props: BlockRendererServerProps) => {
   const { block, previewMode } = props
