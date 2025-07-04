@@ -1,7 +1,7 @@
 // organize-imports-ignore
 import React from 'react'
 import { Body, Font, Head, Html, Preview } from '@react-email/components'
-import type { RenderEmailTemplateProps } from '../utils/renderEmailTempalte.js'
+import type { RenderEmailTemplateProps } from '../utils/renderEmailTemplate.js'
 import { Block, FallbackFont } from '../types.js'
 
 import { EmailTemplatePlaceholder } from './EmailTemplatePlaceholder.js'

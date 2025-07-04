@@ -2,7 +2,7 @@
 
 // organize-imports-ignore
 import React from 'react'
-import type { RenderEmailTemplateProps } from '../utils/renderEmailTempalte.js'
+import type { RenderEmailTemplateProps } from '../utils/renderEmailTemplate.js'
 import { BlockRendererClient } from './BlockRenderer/BlockRendererClient.js'
 import { Block } from '../types.js'
 import { EmailTemplatePlaceholder } from './EmailTemplatePlaceholder.js'

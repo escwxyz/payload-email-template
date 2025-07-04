@@ -6,7 +6,7 @@ import { reduceFieldsToValues } from 'payload/shared'
 import { useEffect, useRef, useState } from 'react'
 import { PluginOptions } from '../types.js'
 import { injectMacro } from '../utils/injectMacro.js'
-import { renderEmailTemplate } from '../utils/renderEmailTempalte.js'
+import { renderEmailTemplate } from '../utils/renderEmailTemplate.js'
 import { EmailTemplateClient } from './EmailTemplateClient.js'
 import styles from './EmailTemplatePreviewerClient.module.css'
 

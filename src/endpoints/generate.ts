@@ -1,6 +1,6 @@
 import { APIError, type PayloadHandler } from 'payload'
 import { getPluginConfig } from '../store.js'
-import { renderEmailTemplate } from '../utils/renderEmailTempalte.js'
+import { renderEmailTemplate } from '../utils/renderEmailTemplate.js'
 
 export const generate: PayloadHandler = async (req) => {
   if (req.method !== 'POST') {
