@@ -1,9 +1,8 @@
-import type { CollectionConfig } from 'payload'
+import { type CollectionConfig } from 'payload'
 import { createContainerBlock } from '../blocks/Container/config.js'
 import { generate } from '../endpoints/generate.js'
 import { createStyleField } from '../fields/style.js'
-import { getPluginConfig } from '../store.js'
-import type { FallbackFont, FontFormat } from '../types.js'
+import type { FallbackFont, FontFormat, PluginOptions } from '../types.js'
 import { validateUrlString } from '../validations/validateUrlString.js'
 // import { deepMerge } from 'payload/shared'
 
@@ -29,16 +28,19 @@ const fontFormatOptions: FontFormat[] = [
   'svg',
 ]
 
-export const createEmailTemplatesCollection = (): CollectionConfig => {
-  const pluginConfig = getPluginConfig()
-
+export const createEmailTemplatesCollection = (
+  options: PluginOptions & {
+    isLocalizationEnabled: boolean
+  },
+): CollectionConfig => {
+  const { isLocalizationEnabled } = options
   const baseConfig: CollectionConfig = {
     slug: 'email-templates',
     admin: {
       useAsTitle: 'name',
     },
-    access: pluginConfig?.collectionConfig?.access || {
-      read: ({ req }) => !!req.user,
+    access: options.collectionAccess || {
+      read: ({ req }) => Boolean(req.user),
     },
     fields: [
       {
@@ -55,13 +57,13 @@ export const createEmailTemplatesCollection = (): CollectionConfig => {
                     type: 'text',
                     required: true,
                     label: 'Template Name',
-                    ...(pluginConfig?.isLocalizationEnabled ? { localized: true } : {}),
+                    unique: true,
                   },
                   {
                     name: 'description',
                     type: 'text',
                     label: 'Description',
-                    ...(pluginConfig?.isLocalizationEnabled ? { localized: true } : {}),
+                    localized: isLocalizationEnabled,
                   },
                 ],
               },
@@ -70,7 +72,7 @@ export const createEmailTemplatesCollection = (): CollectionConfig => {
                 type: 'text',
                 label: 'Email Subject',
                 required: true,
-                ...(pluginConfig?.isLocalizationEnabled ? { localized: true } : {}),
+                localized: isLocalizationEnabled,
               },
               {
                 label: 'Head',
@@ -84,7 +86,7 @@ export const createEmailTemplatesCollection = (): CollectionConfig => {
                     name: 'title',
                     label: 'Title',
                     type: 'text',
-                    ...(pluginConfig?.isLocalizationEnabled ? { localized: true } : {}),
+                    localized: isLocalizationEnabled,
                   },
                   {
                     type: 'collapsible',
@@ -104,7 +106,7 @@ export const createEmailTemplatesCollection = (): CollectionConfig => {
                           description: 'Please input only one font family here.',
                         },
                         required: true,
-                        defaultValue: 'Arial',
+                        defaultValue: ['Arial'],
                       },
                       {
                         name: 'fallbackFontFamily',
@@ -180,6 +182,7 @@ export const createEmailTemplatesCollection = (): CollectionConfig => {
                   components: {
                     Field: {
                       path: 'payload-email-template/rsc#EmailTemplatePreviewerServer',
+                      serverProps: options,
                     },
                   },
                 },

@@ -4,8 +4,6 @@ import { createStyleField } from '../../fields/style.js'
 import { getPluginConfig } from '../../store.js'
 
 export const createHeadingBlock = (): Block => {
-  const isLocalizationEnabled = getPluginConfig()?.isLocalizationEnabled
-
   return {
     slug: 'heading',
     interfaceName: 'ReactEmailHeadingBlock',
@@ -17,7 +15,7 @@ export const createHeadingBlock = (): Block => {
         name: 'content',
         type: 'text',
         required: true,
-        ...(isLocalizationEnabled ? { localized: true } : {}),
+        localized: getPluginConfig()?.isLocalizationEnabled,
       },
       {
         name: 'level',

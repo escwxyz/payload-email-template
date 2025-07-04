@@ -1,11 +1,13 @@
 'use client'
-
+// organize-imports-ignore
+import React from 'react'
 import { Button, TextInput, useAllFormFields, useLocale } from '@payloadcms/ui'
 import { reduceFieldsToValues } from 'payload/shared'
 import { useEffect, useRef, useState } from 'react'
 import { PluginOptions } from '../types.js'
 import { injectMacro } from '../utils/injectMacro.js'
-import { renderEmailTemplate } from '../utils/renderEmailTempalte.js'
+import { renderEmailTemplate } from '../utils/renderEmailTemplate.js'
+import { EmailTemplateClient } from './EmailTemplateClient.js'
 import styles from './EmailTemplatePreviewerClient.module.css'
 
 const ZOOM_LEVELS = [0.75, 1, 1.5]
@@ -13,7 +15,7 @@ const ZOOM_LEVELS = [0.75, 1, 1.5]
 export const EmailTemplatePreviewerClient = ({
   config,
 }: {
-  config: Pick<PluginOptions, 'previewBreakpoints' | 'macros'>
+  config: Pick<PluginOptions, 'previewBreakpoints' | 'imageCollectionSlug'>
 }) => {
   const initialBreakpoints = config.previewBreakpoints || [
     {
@@ -32,8 +34,13 @@ export const EmailTemplatePreviewerClient = ({
 
   const [zoom, setZoom] = useState(1)
 
-  // TODO
-  // const [isDarkMode, setIsDarkMode] = useState(false)
+  // TODO support dark mode
+
+  // const { autoMode, setTheme, theme } = useTheme()
+
+  // useEffect(() => {
+  //   setTheme(theme === 'dark' ? 'light' : 'dark')
+  // }, [theme])
 
   const [breakpoints] =
     useState<NonNullable<PluginOptions['previewBreakpoints']>>(initialBreakpoints)
@@ -42,13 +49,15 @@ export const EmailTemplatePreviewerClient = ({
 
   const [mode, setMode] = useState<'html' | 'plainText'>('html')
 
-  const [html, setHtml] = useState<string | null>(null)
-
   const [plainText, setPlainText] = useState<string | null>(null)
 
   const [fields] = useAllFormFields()
 
   const formData = reduceFieldsToValues(fields, true)
+
+  const [error, setError] = useState<string | null>(null)
+
+  const [loading, setLoading] = useState(false)
 
   const dragContainerRef = useRef<HTMLDivElement>(null)
   const isDragging = useRef(false)
@@ -56,58 +65,27 @@ export const EmailTemplatePreviewerClient = ({
 
   const locale = useLocale()
 
-  const macros = config.macros
-
   useEffect(() => {
-    const generateEmailTemplate = async (mode: 'html' | 'plainText') => {
+    const generateEmailTemplate = async () => {
+      setLoading(true)
       try {
-        if (mode === 'html') {
-          const html = await renderEmailTemplate({
-            data: formData,
-            locale: locale.code,
-            format: 'html',
-          })
-          setHtml(html)
-        } else {
-          const plainText = await renderEmailTemplate({
-            data: formData,
-            locale: locale.code,
-            format: 'plainText',
-          })
+        const plainText = await renderEmailTemplate({
+          data: formData,
+          locale: locale.code,
+          format: 'plainText',
+        })
 
-          setPlainText(plainText)
-        }
+        setPlainText(plainText)
       } catch (error) {
-        const errorHTML = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <title>Preview Error</title>
-          <style>
-            body { 
-              font-family: Arial, sans-serif; 
-              padding: 40px; 
-              text-align: center;
-              color: #dc3545;
-            }
-          </style>
-        </head>
-        <body>
-          <h2>⚠️ Preview Error</h2>
-          <p>Unable to generate email preview.</p>
-          <details>
-            <summary>Error Details</summary>
-            <pre>${error instanceof Error ? error.message : 'Unknown error'}</pre>
-          </details>
-        </body>
-        </html>
-      `
-
-        setHtml(errorHTML)
-        setPlainText(error instanceof Error ? error.message : 'Unknown error')
+        setError(error instanceof Error ? error.message : 'Unknown error')
+      } finally {
+        setLoading(false)
       }
     }
-    generateEmailTemplate(mode)
+
+    if (mode === 'plainText') {
+      generateEmailTemplate()
+    }
   }, [mode, formData, locale])
 
   const onMouseDown = (e: React.MouseEvent) => {
@@ -156,7 +134,7 @@ export const EmailTemplatePreviewerClient = ({
           readOnly
           path="subject"
           label="Email Subject"
-          value={injectMacro(formData.subject || 'Untitled', macros)}
+          value={injectMacro(formData.subject || 'Untitled', {})}
         />
       </div>
       <div className={styles.controllers}>
@@ -164,10 +142,14 @@ export const EmailTemplatePreviewerClient = ({
           {mode.toUpperCase()}
         </Button>
 
-        <Button onClick={handleNextBreakpoint} buttonStyle="primary">
+        <Button
+          onClick={handleNextBreakpoint}
+          buttonStyle="primary"
+          disabled={mode === 'plainText'}
+        >
           {selectedBreakpoint.label}
         </Button>
-        <Button onClick={handleNextZoom} buttonStyle="primary">
+        <Button onClick={handleNextZoom} buttonStyle="primary" disabled={mode === 'plainText'}>
           {Math.round(zoom * 100)}%
         </Button>
       </div>
@@ -188,11 +170,30 @@ export const EmailTemplatePreviewerClient = ({
               transform: `scale(${zoom})`,
             }}
           >
-            {mode === 'html' && html && (
-              <iframe srcDoc={html} className={styles.iframe} tabIndex={-1} aria-hidden="true" />
+            {mode === 'html' && !error && (
+              <EmailTemplateClient
+                data={formData}
+                locale={locale.code}
+                imageCollectionSlug={config.imageCollectionSlug || 'media'}
+              />
             )}
-            {mode === 'plainText' && plainText && (
-              <pre className={styles.plainText}>{plainText}</pre>
+            {mode === 'plainText' && !error && (
+              <pre className={styles.plainText}>{loading ? 'Loading...' : plainText}</pre>
+            )}
+            {error && (
+              <div style={{ color: 'red', padding: 16 }}>
+                <h2>
+                  <span role="img" aria-label="Warning">
+                    ⚠️
+                  </span>{' '}
+                  Preview Error
+                </h2>
+                <p>Unable to generate email preview.</p>
+                <div>
+                  <h3>Error Details</h3>
+                  <pre>{error}</pre>
+                </div>
+              </div>
             )}
           </div>
         </div>

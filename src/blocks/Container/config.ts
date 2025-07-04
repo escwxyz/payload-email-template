@@ -1,4 +1,4 @@
-import { Block } from 'payload'
+import type { Block } from 'payload'
 import { createStyleField } from '../../fields/style.js'
 import { createButtonBlock } from '../Button/config.js'
 import { createHeadingBlock } from '../Heading/config.js'

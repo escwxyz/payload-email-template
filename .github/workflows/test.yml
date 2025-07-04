@@ -1,13 +1,11 @@
-name: Unit Test
+name: Test
 
 on:
   - push
   - pull_request
-
 jobs:
   cache-and-install:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,6 +24,9 @@ jobs:
 
       - name: Format Code and Check for errors
         run: pnpm run format:check
+
+      - name: Install Playwright Browsers
+        run: pnpm playwright install --with-deps
 
       - name: Test
         run: pnpm run test

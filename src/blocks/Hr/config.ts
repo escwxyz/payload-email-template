@@ -12,11 +12,13 @@ export const createHrBlock = (): Block => {
       {
         name: 'color',
         type: 'text',
+        label: 'Color',
         defaultValue: '#e5e5e5',
       },
       {
         name: 'thickness',
         type: 'select',
+        label: 'Thickness',
         options: [
           { label: '1px', value: '1px' },
           { label: '2px', value: '2px' },
@@ -27,6 +29,7 @@ export const createHrBlock = (): Block => {
       {
         name: 'margin',
         type: 'select',
+        label: 'Margin',
         options: [
           { label: 'Small', value: '16px 0' },
           { label: 'Medium', value: '32px 0' },

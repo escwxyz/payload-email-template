@@ -1,9 +1,8 @@
 import type { Block } from 'payload'
+import { createStyleField } from '../../fields/style.js'
 import { getPluginConfig } from '../../store.js'
 
 export const createLinkBlock = (): Block => {
-  const isLocalizationEnabled = getPluginConfig()?.isLocalizationEnabled
-
   return {
     slug: 'link',
     interfaceName: 'ReactEmailLinkBlock',
@@ -16,7 +15,7 @@ export const createLinkBlock = (): Block => {
         type: 'text',
         label: 'Link Text',
         required: true,
-        ...(isLocalizationEnabled ? { localized: true } : {}),
+        localized: getPluginConfig()?.isLocalizationEnabled,
       },
       {
         name: 'url',
@@ -42,6 +41,7 @@ export const createLinkBlock = (): Block => {
         type: 'checkbox',
         defaultValue: true,
       },
+      createStyleField(),
     ],
   }
 }

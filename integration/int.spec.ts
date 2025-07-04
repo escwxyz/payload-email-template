@@ -1,11 +1,14 @@
 import type { Payload } from 'payload'
 
-import { getPayload } from 'payload'
+import { createPayloadRequest, getPayload } from 'payload'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { seedEmailTemplates } from '../dev/helpers/seedEmailTemplates.js'
+// import type { EmailTemplate } from '../dev/payload-types.js'
 import config from '../dev/payload.config.js'
+import { generate } from '../src/endpoints/generate.js'
 
 let payload: Payload
+
+let demoEmailTemplate: any = undefined
 
 afterAll(async () => {
   await payload.destroy()
@@ -13,29 +16,67 @@ afterAll(async () => {
 
 beforeAll(async () => {
   payload = await getPayload({ config })
+
+  const emailTemplate = await payload.find({
+    collection: 'email-templates',
+    where: {
+      name: {
+        equals: 'Demo Email Template',
+      },
+    },
+    limit: 1,
+  })
+
+  demoEmailTemplate = emailTemplate.docs[0]
+
+  console.log('Demo email template:', demoEmailTemplate?.id)
 })
 
 describe('Plugin integration tests', () => {
   it('should seed email templates', async () => {
-    const emailTemplate = await seedEmailTemplates(payload)
-    expect(emailTemplate).toBeDefined()
+    expect(demoEmailTemplate).toBeDefined()
   })
-  // TODO
-  // test('should query custom endpoint added by plugin', async () => {
-  //   const request = new Request('http://localhost:3000/api/email-templates/preview', {
-  //     method: 'GET',
-  //   })
-  //   const payloadRequest = await createPayloadRequest({ config, request })
-  //   const response = await previewEmailTemplate(payloadRequest)
-  //   expect(response.status).toBe(200)
-  //   const data = await response.json()
-  //   expect(data).toMatchObject({
-  //     message: 'Hello from custom endpoint',
-  //   })
-  // })
-  // test('plugin creates and seeds plugin-collection', async () => {
-  //   expect(payload.collections['plugin-collection']).toBeDefined()
-  //   const { docs } = await payload.find({ collection: 'plugin-collection' })
-  //   expect(docs).toHaveLength(1)
-  // })
+
+  describe('email template', () => {
+    it('should have name', () => {
+      expect(demoEmailTemplate?.name).toBe('Demo Email Template')
+    })
+  })
+
+  describe('generate endpoint', () => {
+    it('should error with non-POST request', async () => {
+      const endpoint = `http://localhost:3000/api/email-templates/${demoEmailTemplate!.id}/generate`
+      const request = new Request(endpoint, { method: 'GET' })
+      const payloadRequest = await createPayloadRequest({ config, request })
+      payloadRequest.routeParams = { id: demoEmailTemplate!.id }
+      const response = await generate(payloadRequest)
+      expect(response.status).toBe(405)
+    })
+
+    it('should get access denied by default when endpoint is not public', async () => {
+      const endpoint = `http://localhost:3000/api/email-templates/${demoEmailTemplate!.id}/generate`
+      const request = new Request(endpoint, { method: 'POST' })
+      const payloadRequest = await createPayloadRequest({ config, request })
+      payloadRequest.routeParams = { id: demoEmailTemplate!.id }
+      const response = await generate(payloadRequest)
+      expect(response.status).toBe(403)
+      const data = await response.json()
+      expect(data).toMatchObject({ error: 'Forbidden' })
+    })
+
+    it('should generate email template when access is skipped', async () => {
+      const endpoint = `http://localhost:3000/api/email-templates/${demoEmailTemplate!.id}/generate`
+      const request = new Request(endpoint, { method: 'POST' })
+      const payloadRequest = await createPayloadRequest({ config, request })
+      payloadRequest.routeParams = { id: demoEmailTemplate!.id }
+      payloadRequest.context.skipAccess = true
+      const response = await generate(payloadRequest)
+      expect(response.status).toBe(200)
+      const data = await response.json()
+      expect(data).toMatchObject({
+        html: expect.any(String),
+        plainText: expect.any(String),
+      })
+    })
+  })
 })

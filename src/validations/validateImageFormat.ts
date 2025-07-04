@@ -11,9 +11,6 @@ export const validateImageFormat: UploadFieldSingleValidation = async (
 
   const imageCollectionSlug = getPluginConfig()?.imageCollectionSlug || 'media'
 
-  console.log('value', value)
-
-  // Safely extract the id from value
   let id = value
   if (typeof value === 'object' && value !== null) {
     if ('id' in value && (typeof value.id === 'string' || typeof value.id === 'number')) {

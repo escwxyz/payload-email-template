@@ -6,15 +6,6 @@ import type {
   UploadCollectionSlug,
 } from 'payload'
 
-export type BlockConfig = {
-  isLocalizationEnabled: boolean
-  imageCollectionSlug: UploadCollectionSlug
-}
-
-export type LocalizationConfig = {
-  isLocalizationEnabled: boolean
-}
-
 export interface GenericBlock {
   blockType: string
   id?: string | null
@@ -29,6 +20,7 @@ export interface LinkBlock extends GenericBlock {
   target?: '_blank' | '_self' | '_parent' | '_top'
   color?: string
   underline?: boolean
+  style?: React.CSSProperties
 }
 
 export interface SpacerBlock extends GenericBlock {
@@ -44,9 +36,14 @@ export interface HeadingBlock extends GenericBlock {
   style?: React.CSSProperties
 }
 
+export interface PlainTextBlock extends GenericBlock {
+  blockType: 'plainText'
+  content: string
+}
+
 export interface TextBlock extends GenericBlock {
-  text: string
-  fontSize?: '12px' | '14px' | '16px' | '18px' | '20px'
+  content: (PlainTextBlock | LinkBlock)[]
+  fontSize?: '0.75rem' | '0.875rem' | '1rem' | '1.125rem' | '1.25rem'
   textAlign?: 'left' | 'center' | 'right'
   color?: string | null
   lineHeight?: '1.2' | '1.4' | '1.6' | '1.8'
@@ -87,11 +84,12 @@ export interface RowBlock extends GenericBlock {
     verticalAlign?: 'top' | 'center' | 'bottom' | null
     style?: React.CSSProperties
   }[]
+  style?: React.CSSProperties
 }
 
 export interface ImageBlock<T extends UploadCollectionSlug = 'media'> extends GenericBlock {
   blockType: 'image'
-  image: DataFromCollectionSlug<T>
+  image: string | DataFromCollectionSlug<T>
   alt?: string
   width?: number | null
   height?: number | null
@@ -156,12 +154,13 @@ export type PluginOptions = {
    * - Desktop: 1024 x 1366
    */
   previewBreakpoints?: Omit<LivePreviewConfig, 'url'>['breakpoints']
-  /**
-   * Macros to inject into the email template
-   * Example: { name: "John" }
-   * The email template will be rendered eg. from "Hello {{name}}" to "Hello John"
-   */
-  macros?: Record<string, string>
+  // TODO: add macros
+  // /**
+  //  * Macros to inject into the email template
+  //  * Example: { name: "John" }
+  //  * The email template will be rendered eg. from "Hello {{name}}" to "Hello John"
+  //  */
+  // macros?: Record<string, string>
   /**
    * Disable the style field in the email template
    * @default false
@@ -173,6 +172,38 @@ export type PluginOptions = {
    * @default ({req}) => !!req.user
    */
   endpointAccess?: Access
+
+  /**
+   * Access control for the email templates collection.
+   * @default { read: ({ req }) => !!req.user }
+   */
+  collectionAccess?: CollectionConfig<'email-templates'>['access']
   // TODO: allow user to override
-  collectionConfig?: Omit<CollectionConfig<'email-templates'>, 'slug' | 'fields' | 'endpoints'>
+  // collectionConfig?: Omit<CollectionConfig<'email-templates'>, 'slug' | 'fields' | 'endpoints'>
+}
+
+export type BlockRendererServerProps = {
+  block: Block
+  previewMode: 'preview' | 'render'
+}
+
+export type BlockRendererClientProps = {
+  imageCollectionSlug: UploadCollectionSlug
+} & BlockRendererServerProps
+
+export type ServerBlockComponent = React.ComponentType<BlockRendererServerProps>
+
+export type ClientBlockComponent = React.ComponentType<BlockRendererClientProps>
+
+export type EnvBlocksMap = {
+  section: ServerBlockComponent | ClientBlockComponent
+  container: ServerBlockComponent | ClientBlockComponent
+  row: ServerBlockComponent | ClientBlockComponent
+  image: ServerBlockComponent | ClientBlockComponent
+  spacer: ServerBlockComponent
+  heading: ServerBlockComponent
+  hr: ServerBlockComponent
+  link: ServerBlockComponent
+  text: ServerBlockComponent
+  button: ServerBlockComponent
 }

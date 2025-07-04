@@ -1,20 +1,34 @@
+// organize-imports-ignore
+import React from 'react'
 import { Body, Font, Head, Html, Preview } from '@react-email/components'
+import type { RenderEmailTemplateProps } from '../utils/renderEmailTemplate.js'
 import { Block, FallbackFont } from '../types.js'
-import type { RenderEmailTemplateProps } from '../utils/renderEmailTempalte.js'
-import { BlockRenderer } from './BlockRenderer.js'
 
-type EmailTemplateProps = Omit<RenderEmailTemplateProps, 'format'>
+import { EmailTemplatePlaceholder } from './EmailTemplatePlaceholder.js'
+import { BlockRendererServer } from './BlockRenderer/BlockRendererServer.js'
 
-export const EmailTemplate = (props: EmailTemplateProps) => {
+export const EmailTemplateServer = (props: Omit<RenderEmailTemplateProps, 'format'>) => {
   const { data, locale } = props
 
   const { fontFamily, fallbackFontFamily, webFont, fontWeight, fontStyle, style } = data
 
-  const bodyBlocks = data.body?.map((block: Block) => BlockRenderer({ block }))
+  const body = data.body
+
+  const defaultStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 0,
+    padding: 0,
+    boxSizing: 'border-box',
+    height: '100vh',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'auto',
+  }
 
   return (
     <Html
-      {...(locale ? { lang: locale } : {})}
+      {...(locale ? { lang: locale } : { lang: 'en' })}
       style={{ margin: 0, padding: 0, boxSizing: 'border-box' }}
     >
       <Head>
@@ -33,30 +47,19 @@ export const EmailTemplate = (props: EmailTemplateProps) => {
       </Head>
       <Body
         style={{
-          margin: 0,
-          boxSizing: 'border-box',
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '16px',
+          ...defaultStyle,
           ...style,
         }}
       >
         <Preview>{data?.subject || 'Untitled Email'}</Preview>
-        {bodyBlocks || (
-          <div
-            style={{
-              padding: '60px 20px',
-              textAlign: 'center',
-              color: '#6c757d',
-            }}
-          >
-            <h3 style={{ marginBottom: '8px', fontWeight: 'normal' }}>No content yet</h3>
-            <p style={{ color: '#6c757d', fontSize: '14px' }}>
-              Start building your email template using the editor on the left.
-            </p>
-          </div>
+        {body && Array.isArray(body) && body.length > 0 ? (
+          body.map((block: Block) => (
+            <React.Fragment key={block.id}>
+              <BlockRendererServer block={block} previewMode="render" />
+            </React.Fragment>
+          ))
+        ) : (
+          <EmailTemplatePlaceholder />
         )}
       </Body>
     </Html>

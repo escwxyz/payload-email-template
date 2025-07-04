@@ -4,8 +4,6 @@ import { createStyleField } from '../../fields/style.js'
 import { getPluginConfig } from '../../store.js'
 
 export const createButtonBlock = (): Block => {
-  const isLocalizationEnabled = getPluginConfig()?.isLocalizationEnabled
-
   return {
     slug: 'button',
     interfaceName: 'ReactEmailButtonBlock',
@@ -22,7 +20,7 @@ export const createButtonBlock = (): Block => {
         type: 'text',
         label: 'Button Text',
         required: true,
-        ...(isLocalizationEnabled ? { localized: true } : {}),
+        localized: getPluginConfig()?.isLocalizationEnabled,
       },
       {
         name: 'url',
