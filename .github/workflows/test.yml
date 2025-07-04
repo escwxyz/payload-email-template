@@ -1,10 +1,19 @@
 name: Test
 
 on:
-  - push
-  - pull_request
+  workflow_call:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches-ignore:
+      - main
+
 jobs:
-  cache-and-install:
+  check:
+    uses: ./.github/workflows/check.yml
+  test:
+    needs: check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,8 +31,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Format Code and Check for errors
-        run: pnpm run format:check
+      - name: Cache Playwright
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
 
       - name: Install Playwright Browsers
         run: pnpm playwright install --with-deps
