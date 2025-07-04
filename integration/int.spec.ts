@@ -2,13 +2,13 @@ import type { Payload } from 'payload'
 
 import { createPayloadRequest, getPayload } from 'payload'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import type { EmailTemplate } from '../dev/payload-types.js'
+// import type { EmailTemplate } from '../dev/payload-types.js'
 import config from '../dev/payload.config.js'
 import { generate } from '../src/endpoints/generate.js'
 
 let payload: Payload
 
-let demoEmailTemplate: EmailTemplate | undefined
+let demoEmailTemplate: any = undefined
 
 afterAll(async () => {
   await payload.destroy()

@@ -7,7 +7,7 @@ import { buildConfig } from 'payload'
 import { emailTemplatePlugin } from 'payload-email-template'
 import sharp from 'sharp'
 
-import { seedEmailTemplates } from 'helpers/seedEmailTemplates.js'
+import { seedEmailTemplates } from './helpers/seedEmailTemplates.js'
 import { testEmailAdapter } from './helpers/testEmailAdapter.js'
 import { seed } from './seed.js'
 
@@ -64,9 +64,6 @@ const buildConfigWithMemoryDB = async () => {
     plugins: [
       emailTemplatePlugin({
         imageCollectionSlug: 'media',
-        macros: {
-          name: 'John Doe',
-        },
       }),
     ],
     secret: process.env.PAYLOAD_SECRET || 'test-secret_key',
