@@ -14,7 +14,7 @@ import { EnvBlocksMap } from '../../types.js'
 import { TextBlock } from '../../blocks/Text/Component.js'
 import { createBlockRenderer } from './BlockRendererFactory.js'
 
-const clinetBlocks: EnvBlocksMap = {
+const clientBlocks: EnvBlocksMap = {
   section: SectionBlockClient,
   container: ContainerBlockClient,
   row: RowBlockClient,
@@ -27,4 +27,4 @@ const clinetBlocks: EnvBlocksMap = {
   button: ButtonBlock,
 }
 
-export const BlockRendererClient = createBlockRenderer(clinetBlocks)
+export const BlockRendererClient = createBlockRenderer(clientBlocks)

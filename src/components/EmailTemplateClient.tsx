@@ -38,9 +38,15 @@ export const EmailTemplateClient = (
       }}
     >
       {body && Array.isArray(body) && body.length > 0 ? (
-        body.map((block: Block) =>
-          BlockRendererClient({ block, previewMode: 'preview', imageCollectionSlug }),
-        )
+        body.map((block: Block) => (
+          <React.Fragment key={block.id}>
+            <BlockRendererClient
+              block={block}
+              previewMode="preview"
+              imageCollectionSlug={imageCollectionSlug}
+            />
+          </React.Fragment>
+        ))
       ) : (
         <EmailTemplatePlaceholder />
       )}

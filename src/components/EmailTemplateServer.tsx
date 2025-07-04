@@ -53,7 +53,11 @@ export const EmailTemplateServer = (props: Omit<RenderEmailTemplateProps, 'forma
       >
         <Preview>{data?.subject || 'Untitled Email'}</Preview>
         {body && Array.isArray(body) && body.length > 0 ? (
-          body.map((block: Block) => BlockRendererServer({ block, previewMode: 'render' }))
+          body.map((block: Block) => (
+            <React.Fragment key={block.id}>
+              <BlockRendererServer block={block} previewMode="render" />
+            </React.Fragment>
+          ))
         ) : (
           <EmailTemplatePlaceholder />
         )}

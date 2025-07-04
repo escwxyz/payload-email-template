@@ -17,7 +17,15 @@ export const ContainerBlockClient = (props: BlockRendererClientProps) => {
   return (
     <Container style={style}>
       {content && Array.isArray(content) && content.length > 0
-        ? content.map((block) => BlockRendererClient({ block, previewMode, imageCollectionSlug }))
+        ? content.map((block) => (
+            <React.Fragment key={block.id}>
+              <BlockRendererClient
+                block={block}
+                previewMode={previewMode}
+                imageCollectionSlug={imageCollectionSlug}
+              />
+            </React.Fragment>
+          ))
         : null}
     </Container>
   )

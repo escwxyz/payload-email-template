@@ -23,7 +23,11 @@ export const SectionBlockServer = (props: BlockRendererServerProps) => {
   return (
     <Section style={mergedStyle}>
       {content && Array.isArray(content) && content.length > 0
-        ? content.map((block: Block) => BlockRendererServer({ block, previewMode }))
+        ? content.map((block: Block) => (
+            <React.Fragment key={block.id}>
+              <BlockRendererServer block={block} previewMode={previewMode} />
+            </React.Fragment>
+          ))
         : null}
     </Section>
   )

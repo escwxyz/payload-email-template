@@ -36,12 +36,11 @@ export const RowBlockServer = (props: BlockRendererServerProps) => {
                 ...col.style,
               }}
             >
-              {col.content.map((block) =>
-                BlockRendererServer({
-                  block,
-                  previewMode,
-                }),
-              )}
+              {col.content.map((block) => (
+                <React.Fragment key={block.id}>
+                  <BlockRendererServer block={block} previewMode={previewMode} />
+                </React.Fragment>
+              ))}
             </div>
           ) : null}
         </Column>

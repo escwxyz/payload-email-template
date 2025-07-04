@@ -25,9 +25,15 @@ export const SectionBlockClient = (props: BlockRendererClientProps) => {
   return (
     <Section style={mergedStyle}>
       {content && Array.isArray(content) && content.length > 0
-        ? content.map((block: Block) =>
-            BlockRendererClient({ block, previewMode, imageCollectionSlug }),
-          )
+        ? content.map((block: Block) => (
+            <React.Fragment key={block.id}>
+              <BlockRendererClient
+                block={block}
+                previewMode={previewMode}
+                imageCollectionSlug={imageCollectionSlug}
+              />
+            </React.Fragment>
+          ))
         : null}
     </Section>
   )

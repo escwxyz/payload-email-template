@@ -38,13 +38,15 @@ export const RowBlockClient = (props: BlockRendererClientProps) => {
                 ...col.style,
               }}
             >
-              {col.content.map((block) =>
-                BlockRendererClient({
-                  block,
-                  previewMode,
-                  imageCollectionSlug,
-                }),
-              )}
+              {col.content.map((block) => (
+                <React.Fragment key={block.id}>
+                  <BlockRendererClient
+                    block={block}
+                    previewMode={previewMode}
+                    imageCollectionSlug={imageCollectionSlug}
+                  />
+                </React.Fragment>
+              ))}
             </div>
           ) : null}
         </Column>

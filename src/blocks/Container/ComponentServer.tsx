@@ -16,7 +16,11 @@ export const ContainerBlockServer = (props: BlockRendererServerProps) => {
   return (
     <Container style={style}>
       {content && Array.isArray(content) && content.length > 0
-        ? content.map((block) => BlockRendererServer({ block, previewMode }))
+        ? content.map((block) => (
+            <React.Fragment key={block.id}>
+              <BlockRendererServer block={block} previewMode={previewMode} />
+            </React.Fragment>
+          ))
         : null}
     </Container>
   )
