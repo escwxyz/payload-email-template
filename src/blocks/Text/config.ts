@@ -5,6 +5,8 @@ import { getPluginConfig } from '../../store.js'
 import { createLinkBlock } from '../Link/config.js'
 
 export const createTextBlock = (): Block => {
+  const isLocalizationEnabled = getPluginConfig()?.isLocalizationEnabled
+
   return {
     slug: 'text',
     interfaceName: 'ReactEmailTextBlock',
@@ -31,7 +33,7 @@ export const createTextBlock = (): Block => {
                 type: 'textarea',
                 label: 'Content',
                 required: true,
-                localized: getPluginConfig()?.isLocalizationEnabled,
+                localized: isLocalizationEnabled,
               },
             ],
           },

@@ -154,12 +154,13 @@ export type PluginOptions = {
    * - Desktop: 1024 x 1366
    */
   previewBreakpoints?: Omit<LivePreviewConfig, 'url'>['breakpoints']
-  /**
-   * Macros to inject into the email template
-   * Example: { name: "John" }
-   * The email template will be rendered eg. from "Hello {{name}}" to "Hello John"
-   */
-  macros?: Record<string, string>
+  // TODO: add macros
+  // /**
+  //  * Macros to inject into the email template
+  //  * Example: { name: "John" }
+  //  * The email template will be rendered eg. from "Hello {{name}}" to "Hello John"
+  //  */
+  // macros?: Record<string, string>
   /**
    * Disable the style field in the email template
    * @default false
@@ -175,5 +176,15 @@ export type PluginOptions = {
   collectionConfig?: Omit<CollectionConfig<'email-templates'>, 'slug' | 'fields' | 'endpoints'>
 }
 
-export type RenderMode = 'html' | 'plainText'
-export type PreviewMode = 'preview' | 'render'
+export type BlockRendererServerProps = {
+  block: Block
+  previewMode: 'preview' | 'render'
+}
+
+export type BlockRendererClientProps = {
+  imageCollectionSlug: UploadCollectionSlug
+} & BlockRendererServerProps
+
+export type ServerBlockComponent = React.ComponentType<BlockRendererServerProps>
+
+export type ClientBlockComponent = React.ComponentType<BlockRendererClientProps>

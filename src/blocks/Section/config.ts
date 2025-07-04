@@ -2,7 +2,7 @@ import type { Block } from 'payload'
 import { createStyleField } from '../../fields/style.js'
 import { createButtonBlock } from '../Button/config.js'
 import { createHeadingBlock } from '../Heading/config.js'
-import { HrBlock } from '../Hr/config.js'
+import { createHrBlock } from '../Hr/config.js'
 import { ImageBlock } from '../Image/config.js'
 import { createLinkBlock } from '../Link/config.js'
 import { createRowBlock } from '../Row/config.js'
@@ -27,7 +27,7 @@ export const createSectionBlock = (): Block => {
           createButtonBlock(),
           createTextBlock(),
           createLinkBlock(),
-          HrBlock,
+          createHrBlock(),
           SpacerBlock,
         ],
       },

@@ -16,7 +16,6 @@ A powerful, visual, and block-based email template builder plugin for [Payload C
 - 🏗️ **Custom blocks:** Heading, Button, Container, Image, Row, Section, Text, and more
 - 👀 **Preview:** See your email as you build, with device and zoom controls
 - 🌍 **Localization:** Localize templates and content
-- 🪄 **Macros:** Use dynamic variables in subject and body (e.g., `{{userName}}`)
 - 🔌 **API endpoints:** Generate both HTML and PlainText before sending your email
 
 ---
@@ -51,10 +50,6 @@ export default buildConfig({
         { name: 'mobile', label: 'Mobile', width: 375, height: 667 },
         { name: 'desktop', label: 'Desktop', width: 1440, height: 900 },
       ],
-      macros: {
-        companyName: 'Example Inc.',
-        // ...add your default macros here
-      },
       disableStyle: false, // (optional) allow custom style overrides, default: false
       // ...other options
     }),
@@ -66,9 +61,9 @@ export default buildConfig({
 
 ## 🖼️ Demo
 
-> _Coming soon!_
->
-> ![Demo Screenshot](https://placehold.co/800x400?text=Email+Template+Builder+Demo)
+![Demo 1](/assets/demo-1.png)
+
+![Demo 2](/assets/demo-2.png)
 
 ---
 
@@ -79,7 +74,6 @@ export default buildConfig({
 | `enabled`             | boolean | `true`                         | Enable/disable the plugin                                                   |
 | `imageCollectionSlug` | string  | `'media'`                      | Collection slug for image uploads                                           |
 | `previewBreakpoints`  | array   | see example                    | Device preview sizes for the preview tab                                    |
-| `macros`              | object  | `{}`                           | Default macros for template variables                                       |
 | `disableStyle`        | boolean | `false`                        | Disable custom style overrides                                              |
 | `endpointAccess`      | Access  | `({req}) => Boolean(req.user)` | Default access control for the `/api/email-templates/:id/generate` endpoint |
 
@@ -90,16 +84,6 @@ export default buildConfig({
 ### 🧱 Blocks
 
 Configure blocks (Heading, Button, Container, etc.) to build your template. Each block has configurable fields (content, style, alignment, etc.). Blocks can be nested for complex layouts.
-
-### 🪄 Macros
-
-Use double curly braces to insert variables:
-
-```txt
-Hello {{userName}}
-```
-
-Macros are replaced at render time using the values from your config or API call.
 
 ### 🌍 Localization
 
@@ -131,6 +115,18 @@ You will receive both `html` and `plainText` versions of the template:
 ```
 
 Then you can send it via your email provider.
+
+---
+
+## TODOs
+
+### Flexiable Macros
+
+Different Macros:
+
+- Base variable
+- Condition clause
+- Function / Formatter
 
 ---
 

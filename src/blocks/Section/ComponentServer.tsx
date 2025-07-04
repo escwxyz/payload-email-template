@@ -1,16 +1,17 @@
 // organize-imports-ignore
 import React from 'react'
+import { BlockRendererServerProps } from '../../types.js'
 import { Section } from '@react-email/components'
-import type { Block, PreviewMode, SectionBlock as SectionBlockType } from '../../types.js'
-import { BlockRenderer } from '../BlockRenderer.js'
+import type { Block } from '../../types.js'
+import { BlockRendererServer } from '../../components/BlockRendererFactory.js'
 
-export const SectionBlock = ({
-  block,
-  previewMode,
-}: {
-  block: SectionBlockType
-  previewMode: PreviewMode
-}) => {
+export const SectionBlockServer = (props: BlockRendererServerProps) => {
+  const { block, previewMode } = props
+
+  if (block.blockType !== 'section') {
+    return null
+  }
+
   const { content, backgroundColor, padding, style } = block
 
   const mergedStyle = {
@@ -22,7 +23,7 @@ export const SectionBlock = ({
   return (
     <Section style={mergedStyle}>
       {content && Array.isArray(content) && content.length > 0
-        ? content.map((block: Block) => BlockRenderer({ block, previewMode }))
+        ? content.map((block: Block) => BlockRendererServer({ block, previewMode }))
         : null}
     </Section>
   )

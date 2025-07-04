@@ -21,23 +21,6 @@ export const emailTemplatePlugin =
 
     const endpointAccess: Access = pluginOptions.endpointAccess || (({ req }) => Boolean(req.user))
 
-    ImageBlock.fields.unshift({
-      name: 'alt',
-      label: 'Alt Text',
-      type: 'text',
-      localized: isLocalizationEnabled,
-    })
-
-    ImageBlock.fields.unshift({
-      name: 'image',
-      type: 'upload',
-      relationTo: imageCollectionSlug,
-      label: 'Image',
-      validate: validateImageFormat,
-    })
-
-    ImageBlock.fields.push(createStyleField())
-
     const previewBreakpoints = pluginOptions.previewBreakpoints || [
       {
         name: 'mobile',
@@ -53,6 +36,26 @@ export const emailTemplatePlugin =
       },
     ]
 
+    ImageBlock.fields.unshift({
+      name: 'alt',
+      label: 'Alt Text',
+      type: 'text',
+      localized: isLocalizationEnabled,
+    })
+
+    ImageBlock.fields.unshift({
+      name: 'image',
+      type: 'upload',
+      relationTo: imageCollectionSlug,
+      label: 'Image',
+      admin: {
+        description: 'The image to display in the email template.',
+      },
+      validate: validateImageFormat,
+    })
+
+    ImageBlock.fields.push(createStyleField())
+
     setPluginConfig({
       ...pluginOptions,
       endpointAccess,
@@ -62,7 +65,15 @@ export const emailTemplatePlugin =
       isLocalizationEnabled: !!config.localization,
     })
 
-    const emailTemplates = createEmailTemplatesCollection()
+    const emailTemplates = createEmailTemplatesCollection({
+      ...pluginOptions,
+      endpointAccess,
+      previewBreakpoints,
+      imageCollectionSlug,
+      disableStyle,
+      isLocalizationEnabled: !!config.localization,
+    })
+
     config.collections.push(emailTemplates)
 
     if (pluginOptions.disabled) {

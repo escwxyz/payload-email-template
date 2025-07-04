@@ -2,15 +2,17 @@
 import React from 'react'
 import { Text } from '@react-email/components'
 import type {
+  BlockRendererServerProps,
+  PlainTextBlock,
   LinkBlock as LinkBlockType,
-  PlainTextBlock as PlainTextBlockType,
-  TextBlock as TextBlockType,
 } from '../../types.js'
 import { LinkBlock } from '../Link/Component.js'
-import { injectMacro } from '../../utils/injectMacro.js'
-import { getPluginConfig } from '../../store.js'
 
-export const TextBlock = ({ block }: { block: TextBlockType }) => {
+export const TextBlock = (props: BlockRendererServerProps) => {
+  const { block } = props
+  if (block.blockType !== 'text') {
+    return null
+  }
   const { content, color, style, fontSize, textAlign, lineHeight } = block
   return (
     <Text
@@ -24,17 +26,13 @@ export const TextBlock = ({ block }: { block: TextBlockType }) => {
       }}
     >
       {content && Array.isArray(content) && content.length > 0
-        ? content.map((block: LinkBlockType | PlainTextBlockType) => {
+        ? content.map((block: LinkBlockType | PlainTextBlock) => {
             if (block.blockType === 'link') {
-              return <LinkBlock key={block.id} block={block} />
+              return <LinkBlock key={block.id} block={block} previewMode={props.previewMode} />
             }
 
             if (block.blockType === 'plainText') {
-              return (
-                <React.Fragment key={block.id}>
-                  {injectMacro(block.content, getPluginConfig()?.macros)}
-                </React.Fragment>
-              )
+              return <React.Fragment key={block.id}>{block.content}</React.Fragment>
             }
 
             return null

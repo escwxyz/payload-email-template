@@ -1,11 +1,13 @@
 // organize-imports-ignore
 import React from 'react'
 import { Heading } from '@react-email/components'
-import type { HeadingBlock as HeadingBlockType } from '../../types.js'
-import { getPluginConfig } from '../../store.js'
-import { injectMacro } from '../../utils/injectMacro.js'
+import type { BlockRendererServerProps } from '../../types.js'
 
-export const HeadingBlock = ({ block }: { block: HeadingBlockType }) => {
+export const HeadingBlock = (props: BlockRendererServerProps) => {
+  const { block } = props
+  if (block.blockType !== 'heading') {
+    return null
+  }
   const { level, textAlign, style } = block
 
   const getFontSize = (level?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') => {
@@ -36,7 +38,7 @@ export const HeadingBlock = ({ block }: { block: HeadingBlockType }) => {
         ...style,
       }}
     >
-      {injectMacro(block.content, getPluginConfig()?.macros)}
+      {block.content}
     </Heading>
   )
 }

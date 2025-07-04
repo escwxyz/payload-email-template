@@ -1,16 +1,14 @@
 // organize-imports-ignore
 import React from 'react'
-import { getPluginConfig } from '../store.js'
+import type { PluginOptions } from '../types.js'
 import { EmailTemplatePreviewerClient } from './EmailTemplatePreviewerClient.js'
 
-export const EmailTemplatePreviewerServer = () => {
-  const config = getPluginConfig()
+export const EmailTemplatePreviewerServer = (options: PluginOptions) => {
   return (
     <EmailTemplatePreviewerClient
       config={{
-        macros: config?.macros,
-        previewBreakpoints: config?.previewBreakpoints,
-        imageCollectionSlug: config?.imageCollectionSlug,
+        previewBreakpoints: options?.previewBreakpoints,
+        imageCollectionSlug: options?.imageCollectionSlug,
       }}
     />
   )

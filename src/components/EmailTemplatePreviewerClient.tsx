@@ -4,10 +4,10 @@ import React from 'react'
 import { Button, TextInput, useAllFormFields, useLocale } from '@payloadcms/ui'
 import { reduceFieldsToValues } from 'payload/shared'
 import { useEffect, useRef, useState } from 'react'
-import { EmailTemplate } from '../blocks/EmailTemplate.js'
 import { PluginOptions } from '../types.js'
 import { injectMacro } from '../utils/injectMacro.js'
 import { renderEmailTemplate } from '../utils/renderEmailTempalte.js'
+import { EmailTemplateClient } from './EmailTemplateClient.js'
 import styles from './EmailTemplatePreviewerClient.module.css'
 
 const ZOOM_LEVELS = [0.75, 1, 1.5]
@@ -15,7 +15,7 @@ const ZOOM_LEVELS = [0.75, 1, 1.5]
 export const EmailTemplatePreviewerClient = ({
   config,
 }: {
-  config: Pick<PluginOptions, 'previewBreakpoints' | 'macros' | 'imageCollectionSlug'>
+  config: Pick<PluginOptions, 'previewBreakpoints' | 'imageCollectionSlug'>
 }) => {
   const initialBreakpoints = config.previewBreakpoints || [
     {
@@ -134,7 +134,7 @@ export const EmailTemplatePreviewerClient = ({
           readOnly
           path="subject"
           label="Email Subject"
-          value={injectMacro(formData.subject || 'Untitled', config.macros)}
+          value={injectMacro(formData.subject || 'Untitled', {})}
         />
       </div>
       <div className={styles.controllers}>
@@ -171,14 +171,23 @@ export const EmailTemplatePreviewerClient = ({
             }}
           >
             {mode === 'html' && !error && (
-              <EmailTemplate data={formData} locale={locale.code} previewMode="preview" />
+              <EmailTemplateClient
+                data={formData}
+                locale={locale.code}
+                imageCollectionSlug={config.imageCollectionSlug || 'media'}
+              />
             )}
             {mode === 'plainText' && !error && (
               <pre className={styles.plainText}>{loading ? 'Loading...' : plainText}</pre>
             )}
             {error && (
               <div style={{ color: 'red', padding: 16 }}>
-                <h2>⚠️ Preview Error</h2>
+                <h2>
+                  <span role="img" aria-label="Warning">
+                    ⚠️
+                  </span>{' '}
+                  Preview Error
+                </h2>
                 <p>Unable to generate email preview.</p>
                 <div>
                   <h3>Error Details</h3>

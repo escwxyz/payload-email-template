@@ -3,16 +3,13 @@
 import React from 'react'
 import { usePayloadAPI } from '@payloadcms/ui'
 import { Img } from '@react-email/components'
-import type { UploadCollectionSlug } from 'payload'
-import type { ImageBlock as ImageBlockType } from '../../types.js'
+import type { BlockRendererClientProps } from '../../types.js'
 
-export const ImageBlockClient = ({
-  block,
-  imageCollectionSlug,
-}: {
-  block: ImageBlockType
-  imageCollectionSlug: UploadCollectionSlug
-}) => {
+export const ImageBlockClient = (props: BlockRendererClientProps) => {
+  const { block, imageCollectionSlug } = props
+  if (block.blockType !== 'image') {
+    return null
+  }
   const { image, width, height, objectFit, style } = block
 
   const [{ data, isError, isLoading }] = usePayloadAPI(`/api/${imageCollectionSlug}/${image}`)

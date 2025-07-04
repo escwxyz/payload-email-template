@@ -1,4 +1,4 @@
-import { APIError, PayloadHandler } from 'payload'
+import { APIError, type PayloadHandler } from 'payload'
 import { getPluginConfig } from '../store.js'
 import { renderEmailTemplate } from '../utils/renderEmailTempalte.js'
 
@@ -10,7 +10,7 @@ export const generate: PayloadHandler = async (req) => {
   if (!Boolean(req.context.skipAccess)) {
     const access = getPluginConfig()?.endpointAccess
 
-    if (typeof access === 'function') {
+    if (access && typeof access === 'function') {
       const allowed = await access({ req })
       if (!allowed) return Response.json({ error: 'Forbidden' }, { status: 403 })
     } else if (access === false) {

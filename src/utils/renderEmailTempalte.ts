@@ -1,7 +1,6 @@
 import { pretty, render } from '@react-email/render'
 import React from 'react'
-import { EmailTemplate } from '../blocks/EmailTemplate.js'
-import { getPluginConfig } from '../store.js'
+import { EmailTemplateServer } from '../components/EmailTemplateServer.js'
 import { injectMacro } from './injectMacro.js'
 
 export type RenderEmailTemplateProps = {
@@ -11,19 +10,14 @@ export type RenderEmailTemplateProps = {
 }
 
 export const renderEmailTemplate = async ({ data, locale, format }: RenderEmailTemplateProps) => {
-  const element = React.createElement(EmailTemplate, {
+  const element = React.createElement(EmailTemplateServer, {
     data,
     locale,
-    previewMode: 'render',
   })
 
   const html = await render(element, { plainText: format === 'plainText' })
 
-  const pluginConfig = getPluginConfig()
-
-  const macros = pluginConfig?.macros || {}
-
-  const injectedHtml = injectMacro(html, macros)
+  const injectedHtml = injectMacro(html, {}) // TODO: support macros
 
   return format === 'plainText' ? injectedHtml : await pretty(injectedHtml)
 }

@@ -1,7 +1,12 @@
 // organize-imports-ignore
 import React from 'react'
-import { SpacerBlock as SpacerBlockType } from '../../types.js'
+import type { BlockRendererServerProps } from '../../types.js'
 
-export const SpacerBlock = ({ block }: { block: SpacerBlockType }) => {
-  return <div style={{ height: block.height || '16px' }} />
+export const SpacerBlock = (props: BlockRendererServerProps) => {
+  const { block } = props
+  if (block.blockType !== 'spacer') {
+    return null
+  }
+  const { height } = block
+  return <div style={{ height: height || '16px' }} />
 }

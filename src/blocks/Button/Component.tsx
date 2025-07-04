@@ -1,11 +1,13 @@
 // organize-imports-ignore
 import React from 'react'
 import { Button } from '@react-email/components'
-import type { ButtonBlock as ButtonBlockType } from '../../types.js'
-import { injectMacro } from '../../utils/injectMacro.js'
-import { getPluginConfig } from '../../store.js'
+import type { BlockRendererServerProps } from '../../types.js'
 
-export const ButtonBlock = ({ block }: { block: ButtonBlockType }) => {
+export const ButtonBlock = (props: BlockRendererServerProps) => {
+  const { block } = props
+  if (block.blockType !== 'button') {
+    return null
+  }
   const {
     variant,
     text,
@@ -65,7 +67,7 @@ export const ButtonBlock = ({ block }: { block: ButtonBlockType }) => {
 
   return (
     <Button href={url} style={mergedStyle} target={target}>
-      {injectMacro(text, getPluginConfig()?.macros)}
+      {text}
     </Button>
   )
 }

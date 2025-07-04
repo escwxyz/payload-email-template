@@ -1,11 +1,13 @@
 // organize-imports-ignore
 import React from 'react'
 import { Link } from '@react-email/components'
-import type { LinkBlock as LinkBlockType } from '../../types.js'
-import { injectMacro } from '../../utils/injectMacro.js'
-import { getPluginConfig } from '../../store.js'
+import type { BlockRendererServerProps } from '../../types.js'
 
-export const LinkBlock = ({ block }: { block: LinkBlockType }) => {
+export const LinkBlock = (props: BlockRendererServerProps) => {
+  const { block } = props
+  if (block.blockType !== 'link') {
+    return null
+  }
   const { url, target, text, color, underline, style } = block
 
   return (
@@ -18,7 +20,7 @@ export const LinkBlock = ({ block }: { block: LinkBlockType }) => {
         ...style,
       }}
     >
-      {injectMacro(text, getPluginConfig()?.macros)}
+      {text}
     </Link>
   )
 }

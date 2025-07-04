@@ -1,16 +1,16 @@
 // organize-imports-ignore
 import React from 'react'
+import { BlockRendererServerProps } from '../../types.js'
 import { Column, Row } from '@react-email/components'
-import type { PreviewMode, RowBlock as RowBlockType } from '../../types.js'
-import { BlockRenderer } from '../BlockRenderer.js'
+import { BlockRendererServer } from '../../components/BlockRendererFactory.js'
 
-export const RowBlock = ({
-  block,
-  previewMode,
-}: {
-  block: RowBlockType
-  previewMode: PreviewMode
-}) => {
+export const RowBlockServer = (props: BlockRendererServerProps) => {
+  const { block, previewMode } = props
+
+  if (block.blockType !== 'row') {
+    return null
+  }
+
   const { columns, style } = block
 
   return (
@@ -36,7 +36,12 @@ export const RowBlock = ({
                 ...col.style,
               }}
             >
-              {col.content.map((block) => BlockRenderer({ block, previewMode }))}
+              {col.content.map((block) =>
+                BlockRendererServer({
+                  block,
+                  previewMode,
+                }),
+              )}
             </div>
           ) : null}
         </Column>
