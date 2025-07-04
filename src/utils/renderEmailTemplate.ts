@@ -1,6 +1,6 @@
 import { pretty, render } from '@react-email/render'
 import React from 'react'
-import { EmailTemplateServer } from '../components/EmailTemplateServer.jsx'
+import { EmailTemplateServer } from '../components/EmailTemplateServer.js'
 import { injectMacro } from './injectMacro.js'
 
 export type RenderEmailTemplateProps = {

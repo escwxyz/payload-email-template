@@ -39,8 +39,8 @@ export const createEmailTemplatesCollection = (
     admin: {
       useAsTitle: 'name',
     },
-    access: options?.collectionConfig?.access || {
-      read: ({ req }) => !!req.user,
+    access: options.collectionAccess || {
+      read: ({ req }) => Boolean(req.user),
     },
     fields: [
       {

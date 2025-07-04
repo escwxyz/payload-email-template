@@ -7,7 +7,7 @@ export const generate: PayloadHandler = async (req) => {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })
   }
 
-  if (!Boolean(req.context.skipAccess)) {
+  if (!req.context.skipAccess) {
     const access = getPluginConfig()?.endpointAccess
 
     if (access && typeof access === 'function') {

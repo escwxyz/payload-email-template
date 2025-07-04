@@ -1,5 +1,6 @@
 import type {
   Access,
+  CollectionConfig,
   DataFromCollectionSlug,
   LivePreviewConfig,
   UploadCollectionSlug,
@@ -171,6 +172,12 @@ export type PluginOptions = {
    * @default ({req}) => !!req.user
    */
   endpointAccess?: Access
+
+  /**
+   * Access control for the email templates collection.
+   * @default { read: ({ req }) => !!req.user }
+   */
+  collectionAccess?: CollectionConfig<'email-templates'>['access']
   // TODO: allow user to override
   // collectionConfig?: Omit<CollectionConfig<'email-templates'>, 'slug' | 'fields' | 'endpoints'>
 }
