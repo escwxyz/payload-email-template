@@ -42,16 +42,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Push tags to GitHub
-        run: git push --follow-tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Get latest tag
         id: get_tag
         run: |
           tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
           echo "tag=$tag" >> $GITHUB_OUTPUT
+
+      - name: Push tags to GitHub
+        if: ${{ steps.get_tag.outputs.tag != '' }}
+        run: git push --follow-tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         if: ${{ steps.get_tag.outputs.tag != '' }}
