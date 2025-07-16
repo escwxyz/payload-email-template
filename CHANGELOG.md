@@ -1,5 +1,11 @@
 # payload-email-template
 
+## 1.0.4
+
+### Patch Changes
+
+- 424f281: update release workflow, no code change
+
 ## 1.0.3
 
 ### Patch Changes
