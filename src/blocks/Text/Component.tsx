@@ -5,8 +5,10 @@ import type {
   BlockRendererServerProps,
   PlainTextBlock,
   LinkBlock as LinkBlockType,
+  // MacroBlock as MacroBlockType,
 } from '../../types.js'
 import { LinkBlock } from '../Link/Component.js'
+// import { MacroBlock } from '../Macro/Component.js'
 
 export const TextBlock = (props: BlockRendererServerProps) => {
   const { block } = props
@@ -34,6 +36,10 @@ export const TextBlock = (props: BlockRendererServerProps) => {
             if (block.blockType === 'plainText') {
               return <React.Fragment key={block.id}>{block.content}</React.Fragment>
             }
+
+            // if (block.blockType === 'macro') {
+            //   return <MacroBlock key={block.id} block={block} previewMode={props.previewMode} />
+            // }
 
             return null
           })

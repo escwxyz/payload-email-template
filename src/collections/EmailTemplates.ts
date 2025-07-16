@@ -181,7 +181,7 @@ export const createEmailTemplatesCollection = (
                 admin: {
                   components: {
                     Field: {
-                      path: 'payload-email-template/rsc#EmailTemplatePreviewerServer',
+                      path: 'payload-email-template/components#EmailTemplatePreviewerServer',
                       serverProps: options,
                     },
                   },

@@ -25,6 +25,7 @@ const clientBlocks: EnvBlocksMap = {
   link: LinkBlock,
   text: TextBlock,
   button: ButtonBlock,
+  // macro: MacroComponentClient,
 }
 
 export const BlockRendererClient = createBlockRenderer(clientBlocks)
