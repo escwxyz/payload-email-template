@@ -1,5 +1,5 @@
-import { EmailTemplatePreviewerServer as EmailTemplatePreviewerServer_d9d5ebefa5e39408516ea5add7c0877f } from 'payload-email-template/components'
+import { EmailTemplatePreviewerServer as EmailTemplatePreviewerServer_580064d8a42fd8793c0cd5250595ff0b } from 'payload-email-template/rsc'
 
 export const importMap = {
-  "payload-email-template/components#EmailTemplatePreviewerServer": EmailTemplatePreviewerServer_d9d5ebefa5e39408516ea5add7c0877f
+  "payload-email-template/rsc#EmailTemplatePreviewerServer": EmailTemplatePreviewerServer_580064d8a42fd8793c0cd5250595ff0b
 }

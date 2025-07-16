@@ -2,4 +2,5 @@
 'payload-email-template': patch
 ---
 
-fix type export
+- fix type export
+- update deps
