@@ -1,5 +1,11 @@
 # payload-email-template
 
+## 1.0.3
+
+### Patch Changes
+
+- a363ca9: fix component export
+
 ## 1.0.2
 
 ### Patch Changes
