@@ -1,6 +1,6 @@
 {
   "name": "payload-email-template",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A plugin for Payload CMS to create email templates based on React Email",
   "repository": {
     "type": "git",
