@@ -4,8 +4,7 @@
 
 ### Patch Changes
 
-- 841f91d: - fix type export
-  - update deps
+- 841f91d: - fix type export, update deps
 
 ## 1.0.1
 
