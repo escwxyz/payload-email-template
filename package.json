@@ -20,6 +20,14 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./client": {
+      "import": "./dist/client.js",
+      "types": "./dist/client.d.ts"
+    },
+    "./rsc": {
+      "import": "./dist/rsc.js",
+      "types": "./dist/rsc.d.ts"
     }
   },
   "files": [
