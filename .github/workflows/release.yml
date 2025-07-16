@@ -47,9 +47,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+
       - name: Create GitHub Release
+        if: ${{ steps.get_tag.outputs.tag != '' }}
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.changesets.outputs.tag }}
+          tag_name: ${{ steps.get_tag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

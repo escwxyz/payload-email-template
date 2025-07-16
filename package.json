@@ -38,7 +38,7 @@
     "format:check": "prettier --check .",
     "lint": "eslint",
     "lint:fix": "eslint ./src --fix",
-    "ci:publish": "pnpm build && pnpm publish",
+    "ci:publish": "pnpm build && pnpm changeset publish",
     "test": "pnpm test:unit && pnpm test:e2e && pnpm test:int",
     "test:e2e": "playwright test",
     "test:int": "vitest --dir integration --run",
