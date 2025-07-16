@@ -1,5 +1,11 @@
 # payload-email-template
 
+## 1.1.0
+
+### Minor Changes
+
+- 1cab7f5: fix component export
+
 ## 1.0.4
 
 ### Patch Changes
