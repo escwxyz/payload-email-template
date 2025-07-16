@@ -13,25 +13,15 @@
     "url": "https://github.com/escwxyz"
   },
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./src/index.ts",
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
-    },
-    "./client": {
-      "import": "./src/exports/client.ts",
-      "types": "./src/exports/client.ts",
-      "default": "./src/exports/client.ts"
-    },
-    "./rsc": {
-      "import": "./src/exports/rsc.ts",
-      "types": "./src/exports/rsc.ts",
-      "default": "./src/exports/rsc.ts"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     }
   },
-  "main": "./src/exports/index.ts",
-  "types": "./src/exports/index.ts",
   "files": [
     "dist"
   ],
@@ -55,7 +45,7 @@
     "test:unit": "vitest --dir src --run"
   },
   "dependencies": {
-    "@react-email/components": "^0.1.1",
+    "@react-email/components": "^0.3.1",
     "@react-email/render": "^1.1.3"
   },
   "devDependencies": {
@@ -101,27 +91,6 @@
   "engines": {
     "node": "^18.20.2 || >=20.9.0",
     "pnpm": "^9 || ^10"
-  },
-  "publishConfig": {
-    "exports": {
-      ".": {
-        "import": "./dist/exports/index.js",
-        "types": "./dist/exports/index.d.ts",
-        "default": "./dist/exports/index.js"
-      },
-      "./client": {
-        "import": "./dist/exports/client.js",
-        "types": "./dist/exports/client.d.ts",
-        "default": "./dist/exports/client.js"
-      },
-      "./rsc": {
-        "import": "./dist/exports/rsc.js",
-        "types": "./dist/exports/rsc.d.ts",
-        "default": "./dist/exports/rsc.js"
-      }
-    },
-    "main": "./dist/exports/index.js",
-    "types": "./dist/exports/index.d.ts"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

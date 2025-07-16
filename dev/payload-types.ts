@@ -312,7 +312,7 @@ export interface ReactEmailRowBlock {
  * via the `definition` "ReactEmailTextBlock".
  */
 export interface ReactEmailTextBlock {
-  content: (ReactEmailLinkBlock | ReactEmailPlainTextBlock)[];
+  content: (ReactEmailLinkBlock | ReactEmailPlainTextBlock | ReactEmailMacroBlock)[];
   fontSize?: ('0.75rem' | '0.875rem' | '1rem' | '1.125rem' | '1.25rem') | null;
   textAlign?: ('left' | 'center' | 'right') | null;
   color?: string | null;
@@ -368,6 +368,72 @@ export interface ReactEmailPlainTextBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'plainText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReactEmailMacroBlock".
+ */
+export interface ReactEmailMacroBlock {
+  macroType: 'variable' | 'date' | 'config' | 'function' | 'condition' | 'loop';
+  /**
+   * Template content with macro syntax (e.g., "Hello {{ name }}")
+   */
+  content?: string | null;
+  variableName?: string | null;
+  defaultValue?: string | null;
+  dateFormat?: ('YYYY-MM-DD' | 'MM/DD/YYYY' | 'DD/MM/YYYY' | 'DD.MM.YYYY' | 'long' | 'short') | null;
+  /**
+   * Key from plugin configuration to display
+   */
+  configKey?: string | null;
+  functionName?: string | null;
+  functionArgs?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Condition to evaluate (e.g., "userType === admin")
+   */
+  condition?: string | null;
+  trueContent?: unknown[] | null;
+  falseContent?: unknown[] | null;
+  /**
+   * Path to array data (e.g., "items" or "user.orders")
+   */
+  arrayPath?: string | null;
+  itemTemplate?: unknown[] | null;
+  /**
+   * Override global variables for this macro
+   */
+  localVariables?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Additional custom style object to override the default styles, e.g. { "backgroundColor": "#333" }
+   */
+  style?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'macro';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -706,6 +772,7 @@ export interface ReactEmailTextBlockSelect<T extends boolean = true> {
     | {
         link?: T | ReactEmailLinkBlockSelect<T>;
         plainText?: T | ReactEmailPlainTextBlockSelect<T>;
+        macro?: T | ReactEmailMacroBlockSelect<T>;
       };
   fontSize?: T;
   textAlign?: T;
@@ -735,6 +802,29 @@ export interface ReactEmailLinkBlockSelect<T extends boolean = true> {
  */
 export interface ReactEmailPlainTextBlockSelect<T extends boolean = true> {
   content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReactEmailMacroBlock_select".
+ */
+export interface ReactEmailMacroBlockSelect<T extends boolean = true> {
+  macroType?: T;
+  content?: T;
+  variableName?: T;
+  defaultValue?: T;
+  dateFormat?: T;
+  configKey?: T;
+  functionName?: T;
+  functionArgs?: T;
+  condition?: T;
+  trueContent?: T | {};
+  falseContent?: T | {};
+  arrayPath?: T;
+  itemTemplate?: T | {};
+  localVariables?: T;
+  style?: T;
   id?: T;
   blockName?: T;
 }

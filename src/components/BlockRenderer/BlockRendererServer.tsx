@@ -4,6 +4,7 @@ import { HeadingBlock } from '../../blocks/Heading/Component.js'
 import { HrBlock } from '../../blocks/Hr/Component.js'
 import { ImageBlockServer } from '../../blocks/Image/ComponentServer.js'
 import { LinkBlock } from '../../blocks/Link/Component.js'
+// import { MacroComponentServer } from '../../blocks/Macro/ComponentServer.js'
 import { RowBlockServer } from '../../blocks/Row/ComponentServer.js'
 import { SectionBlockServer } from '../../blocks/Section/ComponentServer.js'
 import { SpacerBlock } from '../../blocks/Spacer/Component.js'
@@ -22,6 +23,7 @@ const serverBlocks: EnvBlocksMap = {
   link: LinkBlock,
   text: TextBlock,
   button: ButtonBlock,
+  // macro: MacroComponentServer,
 }
 
 export const BlockRendererServer = createBlockRenderer(serverBlocks)

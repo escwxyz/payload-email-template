@@ -3,6 +3,7 @@ import { textAlignment } from '../../fields/alignments.js'
 import { createStyleField } from '../../fields/style.js'
 import { getPluginConfig } from '../../store.js'
 import { createLinkBlock } from '../Link/config.js'
+// import { createMacroBlock } from '../Macro/config.js'
 
 export const createTextBlock = (): Block => {
   const isLocalizationEnabled = getPluginConfig()?.isLocalizationEnabled
@@ -37,6 +38,7 @@ export const createTextBlock = (): Block => {
               },
             ],
           },
+          // createMacroBlock(),
         ],
       },
       {

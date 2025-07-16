@@ -43,14 +43,12 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Push tags to GitHub
-        if: ${{ steps.changesets.outputs.tag }}
         run: git push --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
-        if: ${{ steps.changesets.outputs.tag }}
         with:
           tag_name: ${{ steps.changesets.outputs.tag }}
         env:

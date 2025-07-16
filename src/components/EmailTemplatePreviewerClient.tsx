@@ -5,7 +5,6 @@ import { Button, TextInput, useAllFormFields, useLocale } from '@payloadcms/ui'
 import { reduceFieldsToValues } from 'payload/shared'
 import { useEffect, useRef, useState } from 'react'
 import { PluginOptions } from '../types.js'
-import { injectMacro } from '../utils/injectMacro.js'
 import { renderEmailTemplate } from '../utils/renderEmailTemplate.js'
 import { EmailTemplateClient } from './EmailTemplateClient.js'
 import styles from './EmailTemplatePreviewerClient.module.css'
@@ -127,6 +126,13 @@ export const EmailTemplatePreviewerClient = ({
     setZoom(ZOOM_LEVELS[nextIndex])
   }
 
+  // const macroContext: MacroContext = {
+  //   variables: config.macros?.variables || {},
+  //   config: config.macros?.config || {},
+  //   functions: config.macros?.functions || {},
+  //   locale: locale.code,
+  // }
+
   return (
     <div className={styles.wrapper}>
       <div style={{ marginBottom: 16 }}>
@@ -134,7 +140,8 @@ export const EmailTemplatePreviewerClient = ({
           readOnly
           path="subject"
           label="Email Subject"
-          value={injectMacro(formData.subject || 'Untitled', {})}
+          // value={injectMacro(formData.subject || 'Untitled', macroContext)}
+          value={formData.subject || 'Untitled'}
         />
       </div>
       <div className={styles.controllers}>

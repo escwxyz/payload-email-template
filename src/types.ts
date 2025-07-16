@@ -114,6 +114,32 @@ export interface ContainerBlock extends GenericBlock {
   style?: React.CSSProperties
 }
 
+// export interface MacroBlock extends GenericBlock {
+//   blockType: 'macro'
+//   macroType: 'variable' | 'condition' | 'loop' | 'function' | 'date' | 'config'
+//   content: string
+//   // For variable macros: {{ variable }}
+//   variableName?: string
+//   defaultValue?: string
+//   // For condition macros: {{ #if condition }}
+//   condition?: string
+//   trueContent?: Block[]
+//   falseContent?: Block[]
+//   // For loop macros: {{ #each items }}
+//   arrayPath?: string
+//   itemTemplate?: Block[]
+//   // For function macros: {{ @function(args) }}
+//   functionName?: string
+//   functionArgs?: Record<string, any>
+//   // For date macros: {{ @date(format) }}
+//   dateFormat?: string
+//   // For config macros: {{ @config(key) }}
+//   configKey?: string
+//   // Local variable overrides
+//   localVariables?: Record<string, string>
+//   style?: React.CSSProperties
+// }
+
 export type Block =
   | HeadingBlock
   | TextBlock
@@ -125,6 +151,7 @@ export type Block =
   | ImageBlock
   | HrBlock
   | ContainerBlock
+// | MacroBlock
 
 export type FallbackFont =
   | 'Arial'
@@ -154,13 +181,16 @@ export type PluginOptions = {
    * - Desktop: 1024 x 1366
    */
   previewBreakpoints?: Omit<LivePreviewConfig, 'url'>['breakpoints']
-  // TODO: add macros
-  // /**
-  //  * Macros to inject into the email template
-  //  * Example: { name: "John" }
-  //  * The email template will be rendered eg. from "Hello {{name}}" to "Hello John"
-  //  */
-  // macros?: Record<string, string>
+  /**
+   * Macros to inject into the email template
+   * Example: { name: "John", company: "Acme Corp" }
+   * The email template will be rendered eg. from "Hello {{name}}" to "Hello John"
+   */
+  // macros?: {
+  //   variables?: Record<string, string>
+  //   functions?: Record<string, (...args: any[]) => string>
+  //   config?: Record<string, any>
+  // }
   /**
    * Disable the style field in the email template
    * @default false
@@ -206,4 +236,5 @@ export type EnvBlocksMap = {
   link: ServerBlockComponent
   text: ServerBlockComponent
   button: ServerBlockComponent
+  // macro: ServerBlockComponent | ClientBlockComponent
 }

@@ -9,6 +9,7 @@ export const EmailTemplatePreviewerServer = (options: PluginOptions) => {
       config={{
         previewBreakpoints: options?.previewBreakpoints,
         imageCollectionSlug: options?.imageCollectionSlug,
+        // macros: options?.macros,
       }}
     />
   )

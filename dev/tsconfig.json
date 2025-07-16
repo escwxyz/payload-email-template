@@ -18,8 +18,7 @@
     "paths": {
       "@payload-config": ["./payload.config.ts"],
       "payload-email-template": ["../src/index.ts"],
-      "payload-email-template/client": ["../src/exports/client.ts"],
-      "payload-email-template/rsc": ["../src/exports/rsc.ts"]
+      "payload-email-template/rsc": ["../src/components/rsc.ts"]
     },
     "noEmit": true,
     "emitDeclarationOnly": false
