@@ -3,12 +3,13 @@ import React from 'react'
 import { Body, Font, Head, Html, Preview } from '@react-email/components'
 import type { RenderEmailTemplateProps } from '../utils/renderEmailTemplate.js'
 import { Block, FallbackFont } from '../types.js'
+import { injectMacros } from '../utils/macro-processor.js'
 
 import { EmailTemplatePlaceholder } from './EmailTemplatePlaceholder.js'
 import { BlockRendererServer } from './BlockRenderer/BlockRendererServer.js'
 
 export const EmailTemplateServer = (props: Omit<RenderEmailTemplateProps, 'format'>) => {
-  const { data, locale } = props
+  const { data, locale, macroContext = {} } = props
 
   const { fontFamily, fallbackFontFamily, webFont, fontWeight, fontStyle, style } = data
 
@@ -51,11 +52,11 @@ export const EmailTemplateServer = (props: Omit<RenderEmailTemplateProps, 'forma
           ...style,
         }}
       >
-        <Preview>{data?.subject || 'Untitled Email'}</Preview>
+        <Preview>{injectMacros(data?.subject || 'Untitled Email', macroContext)}</Preview>
         {body && Array.isArray(body) && body.length > 0 ? (
           body.map((block: Block) => (
             <React.Fragment key={block.id}>
-              <BlockRendererServer block={block} previewMode="render" />
+              <BlockRendererServer block={block} previewMode="render" macroContext={macroContext} />
             </React.Fragment>
           ))
         ) : (

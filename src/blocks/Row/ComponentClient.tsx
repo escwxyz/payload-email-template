@@ -6,8 +6,10 @@ import { BlockRendererClient } from '../../components/BlockRenderer/BlockRendere
 import { BlockRendererClientProps } from '../../types.js'
 import { Column, Row } from '@react-email/components'
 
-export const RowBlockClient = (props: BlockRendererClientProps) => {
-  const { block, previewMode, imageCollectionSlug } = props
+export const RowBlockClient = (
+  props: BlockRendererClientProps & { macroContext?: Record<string, any> },
+) => {
+  const { block, previewMode, imageCollectionSlug, macroContext } = props
 
   if (block.blockType !== 'row') {
     return null
@@ -44,6 +46,7 @@ export const RowBlockClient = (props: BlockRendererClientProps) => {
                     block={block}
                     previewMode={previewMode}
                     imageCollectionSlug={imageCollectionSlug}
+                    macroContext={macroContext}
                   />
                 </React.Fragment>
               ))}

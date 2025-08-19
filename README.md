@@ -14,6 +14,7 @@ A powerful, visual, and block-based email template builder plugin for [Payload C
 
 - 🧩 **Visual, block-based email template builder** (no raw JSX required)
 - 🏗️ **Custom blocks:** Heading, Button, Container, Image, Row, Section, Text, and more
+- 🔧 **Dynamic macros:** Variables, functions, dates, conditions, loops, and config values
 - 👀 **Preview:** See your email as you build, with device and zoom controls
 - 🌍 **Localization:** Localize templates and content
 - 🔌 **API endpoints:** Generate both HTML and PlainText before sending your email
@@ -51,6 +52,21 @@ export default buildConfig({
         { name: 'desktop', label: 'Desktop', width: 1440, height: 900 },
       ],
       disableStyle: false, // (optional) allow custom style overrides, default: false
+      macros: {
+        // (optional) dynamic content for variables, functions, and config
+        variables: {
+          companyName: 'Your Company',
+          user: { firstName: 'John', lastName: 'Doe' },
+        },
+        functions: {
+          greet: (name) => `Hello, ${name}!`,
+          formatPrice: (price) => `$${price.toFixed(2)}`,
+        },
+        config: {
+          appName: 'My App',
+          version: '1.0.0',
+        },
+      },
       // ...other options
     }),
   ],
@@ -75,6 +91,7 @@ export default buildConfig({
 | `imageCollectionSlug` | string  | `'media'`                                | Collection slug for image uploads                                           |
 | `previewBreakpoints`  | array   | see example                              | Device preview sizes for the preview tab                                    |
 | `disableStyle`        | boolean | `false`                                  | Disable custom style overrides                                              |
+| `macros`              | object  | `{}`                                     | Dynamic content configuration (variables, functions, config)                |
 | `endpointAccess`      | Access  | `({req}) => Boolean(req.user)`           | Default access control for the `/api/email-templates/:id/generate` endpoint |
 | `collectionAccess`    | Access  | `{ read: ({req}) => Boolean(req.user) }` | Default access control for `email-templates` collection                     |
 
@@ -119,15 +136,91 @@ Then you can send it via your email provider.
 
 ---
 
-## 🎯 TODOs
+## 🔧 Macros
 
-### Flexiable Macros
+The plugin supports powerful dynamic content through macros that can be used in email subjects, headings, and text blocks.
 
-Different Macros:
+### Macro Types
 
-- Base variable
-- Condition clause
-- Function / Formatter
+#### 1. **Variables** - `{{variableName}}`
+
+Access data from your macro configuration:
+
+```
+{{companyName}} → "Acme Corporation"
+{{user.firstName}} → "John"
+```
+
+#### 2. **Config Values** - `{{@config('key')}}`
+
+Access plugin configuration values:
+
+```
+{{@config('appName')}} → "My Awesome App"
+{{@config('version')}} → "1.0.0"
+```
+
+#### 3. **Date Functions** - `{{@date('format')}}`
+
+Format current date and time:
+
+```
+{{@date('YYYY-MM-DD')}} → "2024-01-15"
+{{@date('MMMM Do, YYYY')}} → "January 15th, 2024"
+```
+
+#### 4. **Functions** (Server-side only)
+
+Transform data with custom functions:
+
+```
+{{@uppercase('hello')}} → "HELLO"
+{{@greet('John')}} → "Hello, John!" (if configured)
+```
+
+#### 5. **Conditional Content**
+
+Show content based on conditions:
+
+- Set up conditions in the macro block interface
+- Define content for true/false scenarios
+- Useful for personalized content
+
+#### 6. **Loops**
+
+Repeat content for data collections:
+
+- Configure collection data source
+- Define template for each item
+- Great for product lists, etc.
+
+### Usage Locations
+
+**✅ Email Subjects**: `"Welcome to {{companyName}}, {{user.firstName}}!"`
+
+**✅ Heading Blocks**: Mix text, links, and macros in headings
+
+**✅ Text Blocks**: Inline macros alongside regular text and links
+
+**✅ Macro Blocks**: Dedicated blocks for complex conditions and loops
+
+### Runtime Context
+
+You can also pass runtime macro context when generating emails:
+
+```ts
+// POST /api/email-templates/:id/generate
+{
+  "macroContext": {
+    "variables": {
+      "user": { "firstName": "Jane" },
+      "orderTotal": "$99.99"
+    }
+  }
+}
+```
+
+Runtime context takes precedence over plugin configuration.
 
 ---
 

@@ -57,7 +57,7 @@ export const seedEmailTemplates = async (payload: Payload) => {
       data: {
         name: 'Demo Email Template',
         description: 'This is a demo email template',
-        subject: 'Verify your email address',
+        subject: 'Verify your email address for {{companyName}}',
         title: 'Demo Email Template',
         fontFamily: ['Arial'],
         fallbackFontFamily: ['Helvetica', 'sans-serif'],
@@ -93,29 +93,39 @@ export const seedEmailTemplates = async (payload: Payload) => {
                 content: [
                   {
                     blockType: 'heading',
-                    content: 'Verify your email address',
+                    content: [
+                      {
+                        blockType: 'plainText',
+                        content: 'Verify your email address',
+                      },
+                    ],
                     level: 'h3',
                     textAlign: 'left',
-                    id: '68666b9646181c2c1dc17635',
                     blockName: 'Verify your email address',
                   },
 
                   {
                     blockType: 'text',
-
                     content: [
                       {
                         blockType: 'plainText',
+                        content: 'Dear ',
+                      },
+                      {
+                        blockType: 'macro',
+                        type: 'variable',
+                        variable: 'user.firstName',
+                      },
+                      {
+                        blockType: 'plainText',
                         content:
-                          "Thanks for starting the new AWS account creation process. We want to make sure it's really you. Please enter the following verification code when prompted. If you don't want to create an account, you can ignore this message.",
-                        id: '68666bb146181c2c1dc17639',
+                          ", thanks for starting the new AWS account creation process. We want to make sure it's really you. Please enter the following verification code when prompted. If you don't want to create an account, you can ignore this message.",
                       },
                     ],
                     fontSize: '1rem',
                     textAlign: 'left',
                     color: '#000000',
                     lineHeight: '1.6',
-                    id: '68666ba646181c2c1dc17637',
                   },
 
                   {
@@ -125,14 +135,12 @@ export const seedEmailTemplates = async (payload: Payload) => {
                       {
                         blockType: 'plainText',
                         content: 'Verification code',
-                        id: '68666bc646181c2c1dc1763d',
                       },
                     ],
                     fontSize: '1rem',
                     textAlign: 'center',
                     color: '#000000',
                     lineHeight: '1.6',
-                    id: '68666bc346181c2c1dc1763b',
                   },
 
                   {
@@ -228,7 +236,6 @@ export const seedEmailTemplates = async (payload: Payload) => {
                   {
                     blockType: 'plainText',
                     content: '.',
-                    id: '68667b4090c08accb7dd61b5',
                   },
                 ],
                 fontSize: '1rem',

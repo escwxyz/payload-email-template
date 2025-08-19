@@ -27,6 +27,15 @@ export const generate: PayloadHandler = async (req) => {
       return Response.json({ error: 'Unable to find email template' }, { status: 400 })
     }
 
+    // Parse request body for macro context
+    let macroContext = {}
+    try {
+      const body = req.json ? await req.json() : {}
+      macroContext = body.macroContext || {}
+    } catch {
+      // If parsing fails, use default empty context
+    }
+
     const data = await req.payload.findByID({
       collection: 'email-templates',
       id,
@@ -42,11 +51,13 @@ export const generate: PayloadHandler = async (req) => {
         data,
         locale: req.locale,
         format: 'html',
+        macroContext,
       }),
       renderEmailTemplate({
         data,
         locale: req.locale,
         format: 'plainText',
+        macroContext,
       }),
     ])
 

@@ -64,6 +64,27 @@ const buildConfigWithMemoryDB = async () => {
     plugins: [
       emailTemplatePlugin({
         imageCollectionSlug: 'media',
+        macros: {
+          variables: {
+            companyName: 'Acme Corporation',
+            supportEmail: 'support@acme.com',
+            year: '2024',
+            user: {
+              firstName: 'John',
+              lastName: 'Doe',
+              email: 'john.doe@example.com',
+            },
+          },
+          functions: {
+            greet: (name: string) => `Hello, ${name}!`,
+            formatPrice: (price: number) => `$${price.toFixed(2)}`,
+          },
+          config: {
+            appName: 'My Awesome App',
+            version: '1.0.0',
+            theme: 'modern',
+          },
+        },
       }),
     ],
     secret: process.env.PAYLOAD_SECRET || 'test-secret_key',

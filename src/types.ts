@@ -30,7 +30,7 @@ export interface SpacerBlock extends GenericBlock {
 
 export interface HeadingBlock extends GenericBlock {
   blockType: 'heading'
-  content: string
+  content: (PlainTextBlock | LinkBlock | MacroBlock)[]
   level?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   textAlign?: 'left' | 'center' | 'right'
   style?: React.CSSProperties
@@ -42,7 +42,7 @@ export interface PlainTextBlock extends GenericBlock {
 }
 
 export interface TextBlock extends GenericBlock {
-  content: (PlainTextBlock | LinkBlock)[]
+  content: (PlainTextBlock | LinkBlock | MacroBlock)[]
   fontSize?: '0.75rem' | '0.875rem' | '1rem' | '1.125rem' | '1.25rem'
   textAlign?: 'left' | 'center' | 'right'
   color?: string | null
@@ -114,31 +114,40 @@ export interface ContainerBlock extends GenericBlock {
   style?: React.CSSProperties
 }
 
-// export interface MacroBlock extends GenericBlock {
-//   blockType: 'macro'
-//   macroType: 'variable' | 'condition' | 'loop' | 'function' | 'date' | 'config'
-//   content: string
-//   // For variable macros: {{ variable }}
-//   variableName?: string
-//   defaultValue?: string
-//   // For condition macros: {{ #if condition }}
-//   condition?: string
-//   trueContent?: Block[]
-//   falseContent?: Block[]
-//   // For loop macros: {{ #each items }}
-//   arrayPath?: string
-//   itemTemplate?: Block[]
-//   // For function macros: {{ @function(args) }}
-//   functionName?: string
-//   functionArgs?: Record<string, any>
-//   // For date macros: {{ @date(format) }}
-//   dateFormat?: string
-//   // For config macros: {{ @config(key) }}
-//   configKey?: string
-//   // Local variable overrides
-//   localVariables?: Record<string, string>
-//   style?: React.CSSProperties
-// }
+export interface MacroBlock extends GenericBlock {
+  blockType: 'macro'
+  type: 'variable' | 'condition' | 'loop' | 'function' | 'date' | 'config'
+  // For variable macros: {{ variable }}
+  variable?: string
+  // For condition macros: {{ #if condition }}
+  condition?: {
+    expression: string
+    trueContent?: Block[]
+    falseContent?: Block[]
+  }
+  // For loop macros: {{ #each items }}
+  loop?: {
+    collection: string
+    itemName?: string
+    content?: Block[]
+  }
+  // For function macros: {{ @function(args) }}
+  function?: {
+    name: string
+    argument: string
+    options?: string
+  }
+  // For date macros: {{ @date(format) }}
+  date?: {
+    format?: string
+    relative?: boolean
+  }
+  // For config macros: {{ @config(key) }}
+  config?: {
+    key: string
+    fallback?: string
+  }
+}
 
 export type Block =
   | HeadingBlock
@@ -151,7 +160,7 @@ export type Block =
   | ImageBlock
   | HrBlock
   | ContainerBlock
-// | MacroBlock
+  | MacroBlock
 
 export type FallbackFont =
   | 'Arial'
@@ -186,11 +195,11 @@ export type PluginOptions = {
    * Example: { name: "John", company: "Acme Corp" }
    * The email template will be rendered eg. from "Hello {{name}}" to "Hello John"
    */
-  // macros?: {
-  //   variables?: Record<string, string>
-  //   functions?: Record<string, (...args: any[]) => string>
-  //   config?: Record<string, any>
-  // }
+  macros?: {
+    variables?: Record<string, any>
+    functions?: Record<string, (...args: any[]) => any>
+    config?: Record<string, any>
+  }
   /**
    * Disable the style field in the email template
    * @default false
@@ -231,10 +240,10 @@ export type EnvBlocksMap = {
   row: ServerBlockComponent | ClientBlockComponent
   image: ServerBlockComponent | ClientBlockComponent
   spacer: ServerBlockComponent
-  heading: ServerBlockComponent
+  heading: ServerBlockComponent | ClientBlockComponent
   hr: ServerBlockComponent
   link: ServerBlockComponent
   text: ServerBlockComponent
   button: ServerBlockComponent
-  // macro: ServerBlockComponent | ClientBlockComponent
+  macro: ServerBlockComponent | ClientBlockComponent
 }

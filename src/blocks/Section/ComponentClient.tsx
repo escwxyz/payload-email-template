@@ -3,12 +3,14 @@
 // organize-imports-ignore
 import React from 'react'
 import { BlockRendererClient } from '../../components/BlockRenderer/BlockRendererClient.js'
-import { BlockRendererClientProps } from '../../types.js'
+import type { BlockRendererClientProps } from '../../types.js'
 import { Section } from '@react-email/components'
 import type { Block } from '../../types.js'
 
-export const SectionBlockClient = (props: BlockRendererClientProps) => {
-  const { block, previewMode, imageCollectionSlug } = props
+export const SectionBlockClient = (
+  props: BlockRendererClientProps & { macroContext?: Record<string, any> },
+) => {
+  const { block, previewMode, imageCollectionSlug, macroContext } = props
 
   if (block.blockType !== 'section') {
     return null
@@ -31,6 +33,7 @@ export const SectionBlockClient = (props: BlockRendererClientProps) => {
                 block={block}
                 previewMode={previewMode}
                 imageCollectionSlug={imageCollectionSlug}
+                macroContext={macroContext}
               />
             </React.Fragment>
           ))

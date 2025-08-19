@@ -5,6 +5,7 @@ import { createHeadingBlock } from '../Heading/config.js'
 import { createHrBlock } from '../Hr/config.js'
 import { ImageBlock } from '../Image/config.js'
 import { createLinkBlock } from '../Link/config.js'
+import { createMacroConfig } from '../Macro/config.js'
 import { createRowBlock } from '../Row/config.js'
 import { createSectionBlock } from '../Section/config.js'
 import { SpacerBlock } from '../Spacer/config.js'
@@ -31,6 +32,7 @@ export const createContainerBlock = (): Block => {
           createTextBlock(),
           createLinkBlock(),
           SpacerBlock,
+          createMacroConfig(),
         ],
       },
       createStyleField(),

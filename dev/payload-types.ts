@@ -200,6 +200,7 @@ export interface ReactEmailContainerBlock {
         | ReactEmailTextBlock
         | ReactEmailLinkBlock
         | ReactEmailSpacerBlock
+        | MacroBlock
       )[]
     | null;
   /**
@@ -233,6 +234,7 @@ export interface ReactEmailSectionBlock {
         | ReactEmailLinkBlock
         | ReactEmailHrBlock
         | ReactEmailSpacerBlock
+        | MacroBlock
       )[]
     | null;
   /**
@@ -271,6 +273,7 @@ export interface ReactEmailRowBlock {
               | ReactEmailImageBlock
               | ReactEmailLinkBlock
               | ReactEmailSpacerBlock
+              | MacroBlock
             )[]
           | null;
         width?: ('1/4' | '1/3' | '1/2' | '2/3' | '3/4' | 'full') | null;
@@ -312,7 +315,7 @@ export interface ReactEmailRowBlock {
  * via the `definition` "ReactEmailTextBlock".
  */
 export interface ReactEmailTextBlock {
-  content: (ReactEmailLinkBlock | ReactEmailPlainTextBlock | ReactEmailMacroBlock)[];
+  content: (ReactEmailLinkBlock | ReactEmailPlainTextBlock | MacroBlock)[];
   fontSize?: ('0.75rem' | '0.875rem' | '1rem' | '1.125rem' | '1.25rem') | null;
   textAlign?: ('left' | 'center' | 'right') | null;
   color?: string | null;
@@ -371,66 +374,73 @@ export interface ReactEmailPlainTextBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ReactEmailMacroBlock".
+ * via the `definition` "MacroBlock".
  */
-export interface ReactEmailMacroBlock {
-  macroType: 'variable' | 'date' | 'config' | 'function' | 'condition' | 'loop';
+export interface MacroBlock {
+  type: 'variable' | 'condition' | 'loop' | 'function' | 'date' | 'config';
   /**
-   * Template content with macro syntax (e.g., "Hello {{ name }}")
+   * Variable name to inject (e.g., firstName, company)
    */
-  content?: string | null;
-  variableName?: string | null;
-  defaultValue?: string | null;
-  dateFormat?: ('YYYY-MM-DD' | 'MM/DD/YYYY' | 'DD/MM/YYYY' | 'DD.MM.YYYY' | 'long' | 'short') | null;
-  /**
-   * Key from plugin configuration to display
-   */
-  configKey?: string | null;
-  functionName?: string | null;
-  functionArgs?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  /**
-   * Condition to evaluate (e.g., "userType === admin")
-   */
-  condition?: string | null;
-  trueContent?: unknown[] | null;
-  falseContent?: unknown[] | null;
-  /**
-   * Path to array data (e.g., "items" or "user.orders")
-   */
-  arrayPath?: string | null;
-  itemTemplate?: unknown[] | null;
-  /**
-   * Override global variables for this macro
-   */
-  localVariables?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  /**
-   * Additional custom style object to override the default styles, e.g. { "backgroundColor": "#333" }
-   */
-  style?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
+  variable?: string | null;
+  condition?: {
+    /**
+     * Condition expression (e.g., isPremium, hasDiscount)
+     */
+    expression: string;
+    /**
+     * Content to show when condition is true
+     */
+    trueContent?: ReactEmailPlainTextBlock[] | null;
+    /**
+     * Content to show when condition is false
+     */
+    falseContent?: ReactEmailPlainTextBlock[] | null;
+  };
+  loop?: {
+    /**
+     * Collection to iterate over (e.g., items, products)
+     */
+    collection: string;
+    /**
+     * Variable name for each item in the loop
+     */
+    itemName?: string | null;
+    /**
+     * Content to repeat for each item
+     */
+    content?: ReactEmailPlainTextBlock[] | null;
+  };
+  function?: {
+    name: 'uppercase' | 'lowercase' | 'capitalize' | 'truncate' | 'formatNumber';
+    /**
+     * Variable or value to pass to the function
+     */
+    argument: string;
+    /**
+     * Additional options (e.g., length for truncate)
+     */
+    options?: string | null;
+  };
+  date?: {
+    /**
+     * Date format (e.g., YYYY-MM-DD, MM/DD/YYYY)
+     */
+    format?: string | null;
+    /**
+     * Show relative time (e.g., 2 days ago)
+     */
+    relative?: boolean | null;
+  };
+  config?: {
+    /**
+     * Configuration key to access (e.g., appName, supportEmail)
+     */
+    key: string;
+    /**
+     * Default value if config key is not found
+     */
+    fallback?: string | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'macro';
@@ -470,7 +480,7 @@ export interface ReactEmailButtonBlock {
  * via the `definition` "ReactEmailHeadingBlock".
  */
 export interface ReactEmailHeadingBlock {
-  content: string;
+  content: (ReactEmailLinkBlock | ReactEmailPlainTextBlock | MacroBlock)[];
   level?: ('h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') | null;
   textAlign?: ('left' | 'center' | 'right') | null;
   /**
@@ -706,6 +716,7 @@ export interface ReactEmailContainerBlockSelect<T extends boolean = true> {
         text?: T | ReactEmailTextBlockSelect<T>;
         link?: T | ReactEmailLinkBlockSelect<T>;
         spacer?: T | ReactEmailSpacerBlockSelect<T>;
+        macro?: T | MacroBlockSelect<T>;
       };
   style?: T;
   id?: T;
@@ -727,6 +738,7 @@ export interface ReactEmailSectionBlockSelect<T extends boolean = true> {
         link?: T | ReactEmailLinkBlockSelect<T>;
         hr?: T | ReactEmailHrBlockSelect<T>;
         spacer?: T | ReactEmailSpacerBlockSelect<T>;
+        macro?: T | MacroBlockSelect<T>;
       };
   backgroundColor?: T;
   padding?: T;
@@ -751,6 +763,7 @@ export interface ReactEmailRowBlockSelect<T extends boolean = true> {
               image?: T | ReactEmailImageBlockSelect<T>;
               link?: T | ReactEmailLinkBlockSelect<T>;
               spacer?: T | ReactEmailSpacerBlockSelect<T>;
+              macro?: T | MacroBlockSelect<T>;
             };
         width?: T;
         align?: T;
@@ -772,7 +785,7 @@ export interface ReactEmailTextBlockSelect<T extends boolean = true> {
     | {
         link?: T | ReactEmailLinkBlockSelect<T>;
         plainText?: T | ReactEmailPlainTextBlockSelect<T>;
-        macro?: T | ReactEmailMacroBlockSelect<T>;
+        macro?: T | MacroBlockSelect<T>;
       };
   fontSize?: T;
   textAlign?: T;
@@ -807,24 +820,56 @@ export interface ReactEmailPlainTextBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ReactEmailMacroBlock_select".
+ * via the `definition` "MacroBlock_select".
  */
-export interface ReactEmailMacroBlockSelect<T extends boolean = true> {
-  macroType?: T;
-  content?: T;
-  variableName?: T;
-  defaultValue?: T;
-  dateFormat?: T;
-  configKey?: T;
-  functionName?: T;
-  functionArgs?: T;
-  condition?: T;
-  trueContent?: T | {};
-  falseContent?: T | {};
-  arrayPath?: T;
-  itemTemplate?: T | {};
-  localVariables?: T;
-  style?: T;
+export interface MacroBlockSelect<T extends boolean = true> {
+  type?: T;
+  variable?: T;
+  condition?:
+    | T
+    | {
+        expression?: T;
+        trueContent?:
+          | T
+          | {
+              plainText?: T | ReactEmailPlainTextBlockSelect<T>;
+            };
+        falseContent?:
+          | T
+          | {
+              plainText?: T | ReactEmailPlainTextBlockSelect<T>;
+            };
+      };
+  loop?:
+    | T
+    | {
+        collection?: T;
+        itemName?: T;
+        content?:
+          | T
+          | {
+              plainText?: T | ReactEmailPlainTextBlockSelect<T>;
+            };
+      };
+  function?:
+    | T
+    | {
+        name?: T;
+        argument?: T;
+        options?: T;
+      };
+  date?:
+    | T
+    | {
+        format?: T;
+        relative?: T;
+      };
+  config?:
+    | T
+    | {
+        key?: T;
+        fallback?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -851,7 +896,13 @@ export interface ReactEmailButtonBlockSelect<T extends boolean = true> {
  * via the `definition` "ReactEmailHeadingBlock_select".
  */
 export interface ReactEmailHeadingBlockSelect<T extends boolean = true> {
-  content?: T;
+  content?:
+    | T
+    | {
+        link?: T | ReactEmailLinkBlockSelect<T>;
+        plainText?: T | ReactEmailPlainTextBlockSelect<T>;
+        macro?: T | MacroBlockSelect<T>;
+      };
   level?: T;
   textAlign?: T;
   style?: T;

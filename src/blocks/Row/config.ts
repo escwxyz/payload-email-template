@@ -5,6 +5,7 @@ import { createButtonBlock } from '../Button/config.js'
 import { createHeadingBlock } from '../Heading/config.js'
 import { ImageBlock } from '../Image/config.js'
 import { createLinkBlock } from '../Link/config.js'
+import { createMacroConfig } from '../Macro/config.js'
 import { SpacerBlock } from '../Spacer/config.js'
 import { createTextBlock } from '../Text/config.js'
 
@@ -34,6 +35,7 @@ export const createRowBlock = (): Block => {
               ImageBlock,
               createLinkBlock(),
               SpacerBlock,
+              createMacroConfig(),
             ],
           },
           {

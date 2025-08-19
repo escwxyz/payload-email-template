@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 import { PluginOptions } from '../types.js'
 import { renderEmailTemplate } from '../utils/renderEmailTemplate.js'
 import { EmailTemplateClient } from './EmailTemplateClient.js'
+import { injectMacros } from '../utils/macro-processor.js'
 import styles from './EmailTemplatePreviewerClient.module.css'
 
 const ZOOM_LEVELS = [0.75, 1, 1.5]
@@ -14,7 +15,7 @@ const ZOOM_LEVELS = [0.75, 1, 1.5]
 export const EmailTemplatePreviewerClient = ({
   config,
 }: {
-  config: Pick<PluginOptions, 'previewBreakpoints' | 'imageCollectionSlug'>
+  config: Pick<PluginOptions, 'previewBreakpoints' | 'imageCollectionSlug' | 'macros'>
 }) => {
   const initialBreakpoints = config.previewBreakpoints || [
     {
@@ -72,6 +73,7 @@ export const EmailTemplatePreviewerClient = ({
           data: formData,
           locale: locale.code,
           format: 'plainText',
+          macroContext,
         })
 
         setPlainText(plainText)
@@ -126,12 +128,13 @@ export const EmailTemplatePreviewerClient = ({
     setZoom(ZOOM_LEVELS[nextIndex])
   }
 
-  // const macroContext: MacroContext = {
-  //   variables: config.macros?.variables || {},
-  //   config: config.macros?.config || {},
-  //   functions: config.macros?.functions || {},
-  //   locale: locale.code,
-  // }
+  const macroContext = {
+    variables: config.macros?.variables || {},
+    config: config.macros?.config || {},
+    // Functions cannot be serialized to client, they should be processed server-side
+    functions: {},
+    locale: locale.code,
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -141,7 +144,7 @@ export const EmailTemplatePreviewerClient = ({
           path="subject"
           label="Email Subject"
           // value={injectMacro(formData.subject || 'Untitled', macroContext)}
-          value={formData.subject || 'Untitled'}
+          value={injectMacros(formData.subject || 'Untitled', macroContext)}
         />
       </div>
       <div className={styles.controllers}>
@@ -182,6 +185,7 @@ export const EmailTemplatePreviewerClient = ({
                 data={formData}
                 locale={locale.code}
                 imageCollectionSlug={config.imageCollectionSlug || 'media'}
+                macroContext={macroContext}
               />
             )}
             {mode === 'plainText' && !error && (
