@@ -5,7 +5,9 @@ import { BlockRendererClientProps } from '../../types.js'
 import { BlockRendererClient } from '../../components/BlockRenderer/BlockRendererClient.js'
 import { Container } from '@react-email/components'
 
-export const ContainerBlockClient = (props: BlockRendererClientProps & { macroContext?: Record<string, any> }) => {
+export const ContainerBlockClient = (
+  props: BlockRendererClientProps & { macroContext?: Record<string, any> },
+) => {
   const { block, previewMode, imageCollectionSlug, macroContext } = props
 
   if (block.blockType !== 'container') {

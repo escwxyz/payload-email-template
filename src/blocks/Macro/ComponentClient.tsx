@@ -2,22 +2,24 @@
 
 import React from 'react'
 import type { BlockRendererClientProps, MacroBlock } from '../../types.js'
-import { processMacro } from '../../utils/macro-processor.js'
 import { getMacroContext } from '../../utils/macro-context.js'
+import { processMacro } from '../../utils/macro-processor.js'
 
-export const MacroComponentClient: React.FC<BlockRendererClientProps & { macroContext?: Record<string, any> }> = (props) => {
+export const MacroComponentClient: React.FC<
+  BlockRendererClientProps & { macroContext?: Record<string, any> }
+> = (props) => {
   const { block, macroContext = {} } = props
-  
+
   if (block.blockType !== 'macro') {
     return null
   }
-  
+
   const data = block as MacroBlock
-  
+
   // Try to process the macro content for preview
   const mergedContext = getMacroContext(macroContext)
   const processedContent = processMacro(data, mergedContext)
-  
+
   // If we got actual content, display it
   if (processedContent !== null && processedContent !== undefined) {
     if (React.isValidElement(processedContent)) {
@@ -25,7 +27,7 @@ export const MacroComponentClient: React.FC<BlockRendererClientProps & { macroCo
     }
     return <>{processedContent}</>
   }
-  
+
   // Fallback to expression preview if processing fails
   const renderPreview = () => {
     switch (data.type) {

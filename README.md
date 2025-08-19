@@ -56,16 +56,16 @@ export default buildConfig({
         // (optional) dynamic content for variables, functions, and config
         variables: {
           companyName: 'Your Company',
-          user: { firstName: 'John', lastName: 'Doe' }
+          user: { firstName: 'John', lastName: 'Doe' },
         },
         functions: {
           greet: (name) => `Hello, ${name}!`,
-          formatPrice: (price) => `$${price.toFixed(2)}`
+          formatPrice: (price) => `$${price.toFixed(2)}`,
         },
         config: {
           appName: 'My App',
-          version: '1.0.0'
-        }
+          version: '1.0.0',
+        },
       },
       // ...other options
     }),
@@ -143,41 +143,53 @@ The plugin supports powerful dynamic content through macros that can be used in 
 ### Macro Types
 
 #### 1. **Variables** - `{{variableName}}`
+
 Access data from your macro configuration:
+
 ```
 {{companyName}} → "Acme Corporation"
 {{user.firstName}} → "John"
 ```
 
 #### 2. **Config Values** - `{{@config('key')}}`
+
 Access plugin configuration values:
+
 ```
 {{@config('appName')}} → "My Awesome App"
 {{@config('version')}} → "1.0.0"
 ```
 
 #### 3. **Date Functions** - `{{@date('format')}}`
+
 Format current date and time:
+
 ```
 {{@date('YYYY-MM-DD')}} → "2024-01-15"
 {{@date('MMMM Do, YYYY')}} → "January 15th, 2024"
 ```
 
 #### 4. **Functions** (Server-side only)
+
 Transform data with custom functions:
+
 ```
 {{@uppercase('hello')}} → "HELLO"
 {{@greet('John')}} → "Hello, John!" (if configured)
 ```
 
 #### 5. **Conditional Content**
+
 Show content based on conditions:
+
 - Set up conditions in the macro block interface
 - Define content for true/false scenarios
 - Useful for personalized content
 
 #### 6. **Loops**
+
 Repeat content for data collections:
+
 - Configure collection data source
 - Define template for each item
 - Great for product lists, etc.

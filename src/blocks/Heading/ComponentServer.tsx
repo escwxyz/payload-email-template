@@ -1,17 +1,19 @@
 // organize-imports-ignore
 import React from 'react'
 import { Heading } from '@react-email/components'
-import type { 
-  BlockRendererServerProps, 
-  PlainTextBlock, 
-  LinkBlock as LinkBlockType, 
-  MacroBlock 
+import type {
+  BlockRendererServerProps,
+  PlainTextBlock,
+  LinkBlock as LinkBlockType,
+  MacroBlock,
 } from '../../types.js'
 import { LinkBlock } from '../Link/Component.js'
 import { MacroComponentServer } from '../Macro/ComponentServer.js'
 import { injectMacros } from '../../utils/macro-processor.js'
 
-export const HeadingBlockServer = (props: BlockRendererServerProps & { macroContext?: Record<string, any> }) => {
+export const HeadingBlockServer = (
+  props: BlockRendererServerProps & { macroContext?: Record<string, any> },
+) => {
   const { block, macroContext = {} } = props
   if (block.blockType !== 'heading') {
     return null

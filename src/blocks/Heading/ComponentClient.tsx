@@ -3,17 +3,19 @@
 // organize-imports-ignore
 import React from 'react'
 import { Heading } from '@react-email/components'
-import type { 
-  BlockRendererClientProps, 
-  PlainTextBlock, 
-  LinkBlock as LinkBlockType, 
-  MacroBlock 
+import type {
+  BlockRendererClientProps,
+  PlainTextBlock,
+  LinkBlock as LinkBlockType,
+  MacroBlock,
 } from '../../types.js'
 import { LinkBlock } from '../Link/Component.js'
 import { MacroComponentClient } from '../Macro/ComponentClient.js'
 import { injectMacros } from '../../utils/macro-processor.js'
 
-export const HeadingBlockClient = (props: BlockRendererClientProps & { macroContext?: Record<string, any> }) => {
+export const HeadingBlockClient = (
+  props: BlockRendererClientProps & { macroContext?: Record<string, any> },
+) => {
   const { block, macroContext = {} } = props
   if (block.blockType !== 'heading') {
     return null

@@ -4,7 +4,9 @@ import { BlockRendererServerProps } from '../../types.js'
 import { BlockRendererServer } from '../../components/BlockRenderer/BlockRendererServer.js'
 import { Container } from '@react-email/components'
 
-export const ContainerBlockServer = (props: BlockRendererServerProps & { macroContext?: Record<string, any> }) => {
+export const ContainerBlockServer = (
+  props: BlockRendererServerProps & { macroContext?: Record<string, any> },
+) => {
   const { block, previewMode, macroContext } = props
 
   if (block.blockType !== 'container') {
@@ -18,7 +20,11 @@ export const ContainerBlockServer = (props: BlockRendererServerProps & { macroCo
       {content && Array.isArray(content) && content.length > 0
         ? content.map((block) => (
             <React.Fragment key={block.id}>
-              <BlockRendererServer block={block} previewMode={previewMode} macroContext={macroContext} />
+              <BlockRendererServer
+                block={block}
+                previewMode={previewMode}
+                macroContext={macroContext}
+              />
             </React.Fragment>
           ))
         : null}

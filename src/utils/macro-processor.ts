@@ -298,7 +298,6 @@ export function injectMacros(text: string, context: Record<string, any> = {}): s
       }
     }
 
-
     // Regular variable substitution
     const value = getNestedValue(context.variables || {}, trimmed)
     return String(value ?? match) // Return original if not found
