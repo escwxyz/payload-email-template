@@ -9,7 +9,12 @@ export const EmailTemplatePreviewerServer = (options: PluginOptions) => {
       config={{
         previewBreakpoints: options?.previewBreakpoints,
         imageCollectionSlug: options?.imageCollectionSlug,
-        // macros: options?.macros,
+        macros: options?.macros ? {
+          variables: options.macros.variables,
+          config: options.macros.config,
+          // Functions cannot be serialized to client components
+          functions: undefined,
+        } : undefined,
       }}
     />
   )

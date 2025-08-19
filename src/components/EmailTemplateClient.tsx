@@ -13,7 +13,7 @@ export const EmailTemplateClient = (
     imageCollectionSlug: UploadCollectionSlug
   },
 ) => {
-  const { data, imageCollectionSlug } = props
+  const { data, imageCollectionSlug, macroContext = {} } = props
 
   const body = data.body
 
@@ -44,6 +44,7 @@ export const EmailTemplateClient = (
               block={block}
               previewMode="preview"
               imageCollectionSlug={imageCollectionSlug}
+              macroContext={macroContext}
             />
           </React.Fragment>
         ))

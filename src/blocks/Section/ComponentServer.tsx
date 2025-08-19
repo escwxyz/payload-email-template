@@ -1,12 +1,14 @@
 // organize-imports-ignore
 import React from 'react'
-import { BlockRendererServerProps } from '../../types.js'
+import type { BlockRendererServerProps } from '../../types.js'
 import { Section } from '@react-email/components'
 import type { Block } from '../../types.js'
 import { BlockRendererServer } from '../../components/BlockRenderer/BlockRendererServer.js'
 
-export const SectionBlockServer = (props: BlockRendererServerProps) => {
-  const { block, previewMode } = props
+export const SectionBlockServer = (
+  props: BlockRendererServerProps & { macroContext?: Record<string, any> },
+) => {
+  const { block, previewMode, macroContext } = props
 
   if (block.blockType !== 'section') {
     return null
@@ -25,7 +27,11 @@ export const SectionBlockServer = (props: BlockRendererServerProps) => {
       {content && Array.isArray(content) && content.length > 0
         ? content.map((block: Block) => (
             <React.Fragment key={block.id}>
-              <BlockRendererServer block={block} previewMode={previewMode} />
+              <BlockRendererServer
+                block={block}
+                previewMode={previewMode}
+                macroContext={macroContext}
+              />
             </React.Fragment>
           ))
         : null}

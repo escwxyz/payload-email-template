@@ -4,8 +4,8 @@ import { BlockRendererServerProps } from '../../types.js'
 import { Column, Row } from '@react-email/components'
 import { BlockRendererServer } from '../../components/BlockRenderer/BlockRendererServer.js'
 
-export const RowBlockServer = (props: BlockRendererServerProps) => {
-  const { block, previewMode } = props
+export const RowBlockServer = (props: BlockRendererServerProps & { macroContext?: Record<string, any> }) => {
+  const { block, previewMode, macroContext } = props
 
   if (block.blockType !== 'row') {
     return null
@@ -38,7 +38,7 @@ export const RowBlockServer = (props: BlockRendererServerProps) => {
             >
               {col.content.map((block) => (
                 <React.Fragment key={block.id}>
-                  <BlockRendererServer block={block} previewMode={previewMode} />
+                  <BlockRendererServer block={block} previewMode={previewMode} macroContext={macroContext} />
                 </React.Fragment>
               ))}
             </div>

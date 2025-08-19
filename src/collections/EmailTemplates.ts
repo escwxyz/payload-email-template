@@ -1,10 +1,9 @@
-import { type CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload'
 import { createContainerBlock } from '../blocks/Container/config.js'
 import { generate } from '../endpoints/generate.js'
 import { createStyleField } from '../fields/style.js'
 import type { FallbackFont, FontFormat, PluginOptions } from '../types.js'
 import { validateUrlString } from '../validations/validateUrlString.js'
-// import { deepMerge } from 'payload/shared'
 
 const fallbackFontFamilyOptions: FallbackFont[] = [
   'Arial',
@@ -202,5 +201,4 @@ export const createEmailTemplatesCollection = (
   }
 
   return baseConfig
-  // return deepMerge(baseConfig, pluginConfig?.collectionConfig || {})
 }
