@@ -83,7 +83,11 @@ function processLoop(
         },
       }
 
-      return React.createElement('div', { key: index }, renderBlocks(macro.loop!.content!, itemContext))
+      return React.createElement(
+        'div',
+        { key: index },
+        renderBlocks(macro.loop!.content!, itemContext),
+      )
     }),
   )
 }
