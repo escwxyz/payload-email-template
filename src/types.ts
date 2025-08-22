@@ -224,6 +224,7 @@ export type PluginOptions = {
 export type BlockRendererServerProps = {
   block: Block
   previewMode: 'preview' | 'render'
+  macroContext?: Record<string, unknown>
 }
 
 export type BlockRendererClientProps = {
