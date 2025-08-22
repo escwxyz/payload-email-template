@@ -177,7 +177,12 @@ export type FallbackFont =
 export type FontFormat = 'woff' | 'woff2' | 'truetype' | 'opentype' | 'embedded-opentype' | 'svg'
 
 export type PluginOptions = {
-  disabled?: boolean
+  /**
+   * Enable the plugin features.
+   * Defaults to true. Set to false to disable the plugin.
+   * @default true
+   */
+  enabled?: boolean
   /**
    * The collection slug to use for the image field.
    * @default 'media'
