@@ -14,6 +14,12 @@ export const emailTemplatePlugin =
       config.collections = []
     }
 
+    const isEnabled = pluginOptions.enabled ?? true
+
+    if (!isEnabled) {
+      return config
+    }
+
     const imageCollectionSlug = pluginOptions.imageCollectionSlug || 'media'
     const disableStyle =
       pluginOptions.disableStyle === undefined ? false : pluginOptions.disableStyle
@@ -75,10 +81,6 @@ export const emailTemplatePlugin =
     })
 
     config.collections.push(emailTemplates)
-
-    if (pluginOptions.disabled) {
-      return config
-    }
 
     if (!config.endpoints) {
       config.endpoints = []
