@@ -52,6 +52,23 @@ export const createMacroConfig = (): Block => {
           value: 'config',
         },
       ],
+      hooks: {
+        beforeChange: [
+          ({ value, siblingData, originalDoc }) => {
+            // If type changed, clean up other type fields
+            if (originalDoc && originalDoc.type !== value) {
+              const fieldsToClean = ['variable', 'condition', 'loop', 'function', 'date', 'config']
+
+              fieldsToClean.forEach((fieldName) => {
+                if (fieldName !== value && siblingData[fieldName]) {
+                  delete siblingData[fieldName]
+                }
+              })
+            }
+            return value
+          },
+        ],
+      },
     },
     {
       name: 'variable',
