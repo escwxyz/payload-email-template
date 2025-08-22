@@ -5,7 +5,7 @@ import { getMacroContext } from './macro-context.js'
 import { injectMacros } from './macro-processor.js'
 
 export type RenderEmailTemplateProps = {
-  data: Record<string, unknown>
+  data: Record<string, any>
   locale?: string | null
   format?: 'html' | 'plainText'
   macroContext?: Record<string, unknown>
