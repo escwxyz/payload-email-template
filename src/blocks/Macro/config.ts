@@ -60,6 +60,7 @@ export const createMacroConfig = (): Block => {
         condition: (_, { type }) => type === 'variable',
         description: 'Variable name to inject (e.g., firstName, company)',
       },
+      required: true,
     },
     {
       name: 'condition',

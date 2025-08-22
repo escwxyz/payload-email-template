@@ -8,7 +8,7 @@ export type RenderEmailTemplateProps = {
   data: Record<string, any>
   locale?: string | null
   format?: 'html' | 'plainText'
-  macroContext?: Record<string, any>
+  macroContext?: Record<string, unknown>
 }
 
 export const renderEmailTemplate = async ({
@@ -28,7 +28,5 @@ export const renderEmailTemplate = async ({
 
   const html = await render(element, { plainText: format === 'plainText' })
 
-  const injectedHtml = injectMacros(html, mergedMacroContext)
-
-  return format === 'plainText' ? injectedHtml : await pretty(injectedHtml)
+  return format === 'plainText' ? injectMacros(html, mergedMacroContext) : await pretty(html)
 }

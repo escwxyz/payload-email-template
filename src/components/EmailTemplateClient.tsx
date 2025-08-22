@@ -4,7 +4,7 @@
 import React from 'react'
 import type { RenderEmailTemplateProps } from '../utils/renderEmailTemplate.js'
 import { BlockRendererClient } from './BlockRenderer/BlockRendererClient.js'
-import { Block } from '../types.js'
+import type { Block } from '../types.js'
 import { EmailTemplatePlaceholder } from './EmailTemplatePlaceholder.js'
 import type { UploadCollectionSlug } from 'payload'
 

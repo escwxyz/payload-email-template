@@ -4,7 +4,7 @@ import type { Block, MacroBlock } from '../types.js'
 export function processMacro(
   macro: MacroBlock,
   context: Record<string, any> = {},
-  renderBlocks?: (blocks: Block[]) => React.ReactNode,
+  renderBlocks?: (blocks: Block[], context?: Record<string, any>) => React.ReactNode,
 ): React.ReactNode | string | null {
   switch (macro.type) {
     case 'variable':
@@ -40,18 +40,18 @@ function processVariable(variableName?: string, context: Record<string, any> = {
 function processCondition(
   macro: MacroBlock,
   context: Record<string, any>,
-  renderBlocks?: (blocks: Block[]) => React.ReactNode,
+  renderBlocks?: (blocks: Block[], context?: Record<string, any>) => React.ReactNode,
 ): React.ReactNode | null {
   if (!macro.condition?.expression) return null
 
   const isTrue = evaluateCondition(macro.condition.expression, context)
 
   if (isTrue && macro.condition.trueContent && renderBlocks) {
-    return renderBlocks(macro.condition.trueContent)
+    return renderBlocks(macro.condition.trueContent, context)
   }
 
   if (!isTrue && macro.condition.falseContent && renderBlocks) {
-    return renderBlocks(macro.condition.falseContent)
+    return renderBlocks(macro.condition.falseContent, context)
   }
 
   return null
@@ -60,7 +60,7 @@ function processCondition(
 function processLoop(
   macro: MacroBlock,
   context: Record<string, any>,
-  renderBlocks?: (blocks: Block[]) => React.ReactNode,
+  renderBlocks?: (blocks: Block[], context?: Record<string, any>) => React.ReactNode,
 ): React.ReactNode | null {
   if (!macro.loop?.collection || !macro.loop.content || !renderBlocks) return null
 
@@ -83,7 +83,11 @@ function processLoop(
         },
       }
 
-      return React.createElement('div', { key: index }, renderBlocks(macro.loop!.content!))
+      return React.createElement(
+        'div',
+        { key: index },
+        renderBlocks(macro.loop!.content!, itemContext),
+      )
     }),
   )
 }

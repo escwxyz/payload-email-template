@@ -1,6 +1,8 @@
 import { getPluginConfig } from '../store.js'
 
-export function getMacroContext(runtimeContext: Record<string, any> = {}): Record<string, any> {
+export function getMacroContext(
+  runtimeContext: Record<string, unknown> = {},
+): Record<string, unknown> {
   const pluginConfig = getPluginConfig()
   const pluginMacros = pluginConfig?.macros || {}
 
@@ -8,18 +10,17 @@ export function getMacroContext(runtimeContext: Record<string, any> = {}): Recor
   // Runtime context takes precedence over plugin configuration
   return {
     variables: {
-      ...pluginMacros.variables,
-      ...runtimeContext.variables,
+      ...(pluginMacros.variables ?? {}),
+      ...(runtimeContext.variables ?? {}),
     },
     functions: {
-      ...pluginMacros.functions,
-      ...runtimeContext.functions,
+      ...(pluginMacros.functions ?? {}),
+      ...(runtimeContext.functions ?? {}),
     },
     config: {
-      ...pluginMacros.config,
-      ...runtimeContext.config,
+      ...(pluginMacros.config ?? {}),
+      ...(runtimeContext.config ?? {}),
     },
-    // Include any other context properties
     ...runtimeContext,
   }
 }

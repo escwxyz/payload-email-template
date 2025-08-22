@@ -1,14 +1,15 @@
 'use client'
 
 import React from 'react'
-import type { BlockRendererClientProps, MacroBlock } from '../../types.js'
+import { BlockRendererClient } from '../../components/BlockRenderer/BlockRendererClient.js'
+import type { Block, BlockRendererClientProps, MacroBlock } from '../../types.js'
 import { getMacroContext } from '../../utils/macro-context.js'
 import { processMacro } from '../../utils/macro-processor.js'
 
 export const MacroComponentClient: React.FC<
-  BlockRendererClientProps & { macroContext?: Record<string, any> }
+  BlockRendererClientProps & { macroContext?: Record<string, unknown> }
 > = (props) => {
-  const { block, macroContext = {} } = props
+  const { block, macroContext = {}, previewMode, imageCollectionSlug } = props
 
   if (block.blockType !== 'macro') {
     return null
@@ -18,7 +19,21 @@ export const MacroComponentClient: React.FC<
 
   // Try to process the macro content for preview
   const mergedContext = getMacroContext(macroContext)
-  const processedContent = processMacro(data, mergedContext)
+
+  const renderBlocks = (blocks: Block[], context?: Record<string, unknown>) => {
+    return blocks.map((childBlock) => (
+      <React.Fragment key={childBlock.id}>
+        <BlockRendererClient
+          block={childBlock}
+          previewMode={previewMode}
+          imageCollectionSlug={imageCollectionSlug}
+          macroContext={context || mergedContext}
+        />
+      </React.Fragment>
+    ))
+  }
+
+  const processedContent = processMacro(data, mergedContext, renderBlocks)
 
   // If we got actual content, display it
   if (processedContent !== null && processedContent !== undefined) {

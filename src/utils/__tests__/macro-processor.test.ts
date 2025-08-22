@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import type { MacroBlock } from '../../types.js'
 import { injectMacros, processMacro } from '../macro-processor.js'
 
@@ -162,6 +162,114 @@ describe('macro-processor', () => {
 
       const result = processMacro(macro, context)
       expect(result).toBe('Default Value')
+    })
+
+    it('should process loop macro and pass itemContext to renderBlocks', () => {
+      const macro: MacroBlock = {
+        blockType: 'macro',
+        type: 'loop',
+        loop: {
+          collection: 'users',
+          itemName: 'user',
+          content: [
+            {
+              blockType: 'text',
+              content: [
+                {
+                  blockType: 'plainText',
+                  content: 'Hello {{user.name}}!',
+                },
+              ],
+            },
+          ],
+        },
+      }
+
+      const context = {
+        variables: {
+          users: [
+            { name: 'John', email: 'john@test.com' },
+            { name: 'Jane', email: 'jane@test.com' },
+          ],
+        },
+      }
+
+      const capturedContexts: Array<Record<string, any>> = []
+      const mockRenderBlocks = vi.fn((_blocks: any[], itemContext?: Record<string, any>) => {
+        if (itemContext) {
+          capturedContexts.push(itemContext)
+        }
+        return `Rendered: ${itemContext?.variables?.user?.name || 'unknown'}`
+      })
+
+      processMacro(macro, context, mockRenderBlocks)
+
+      // Should call renderBlocks twice (once for each user)
+      expect(mockRenderBlocks).toHaveBeenCalledTimes(2)
+
+      // Check that itemContext was passed correctly
+      expect(capturedContexts).toHaveLength(2)
+      expect(capturedContexts[0].variables.user).toEqual({ name: 'John', email: 'john@test.com' })
+      expect(capturedContexts[0].variables.userIndex).toBe(0)
+      expect(capturedContexts[1].variables.user).toEqual({ name: 'Jane', email: 'jane@test.com' })
+      expect(capturedContexts[1].variables.userIndex).toBe(1)
+
+      // Check that original context is preserved
+      expect(capturedContexts[0].variables.users).toEqual(context.variables.users)
+      expect(capturedContexts[1].variables.users).toEqual(context.variables.users)
+    })
+
+    it('should process condition macro and pass context to renderBlocks', () => {
+      const macro: MacroBlock = {
+        blockType: 'macro',
+        type: 'condition',
+        condition: {
+          expression: 'isVip',
+          trueContent: [
+            {
+              blockType: 'text',
+              content: [
+                {
+                  blockType: 'plainText',
+                  content: 'VIP content',
+                },
+              ],
+            },
+          ],
+          falseContent: [
+            {
+              blockType: 'text',
+              content: [
+                {
+                  blockType: 'plainText',
+                  content: 'Regular content',
+                },
+              ],
+            },
+          ],
+        },
+      }
+
+      const context = {
+        variables: {
+          isVip: true,
+        },
+      }
+
+      let capturedContext: Record<string, unknown> | undefined
+      const mockRenderBlocks = vi.fn((_blocks: any[], passedContext?: Record<string, unknown>) => {
+        capturedContext = passedContext
+        return 'Rendered content'
+      })
+
+      processMacro(macro, context, mockRenderBlocks)
+
+      // Should call renderBlocks once (for true condition)
+      expect(mockRenderBlocks).toHaveBeenCalledTimes(1)
+      expect(mockRenderBlocks).toHaveBeenCalledWith(macro.condition?.trueContent, context)
+
+      // Check that context was passed correctly
+      expect(capturedContext).toEqual(context)
     })
   })
 })
