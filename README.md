@@ -150,13 +150,14 @@ import { renderEmailTemplate } from "payload-email-template"
 //   ...
 // })
 
-const html = renderEmailTemplate({
+const html = await renderEmailTemplate({
   data: emailTemplate,
   locale: 'en',
   format: 'html',
   macroContext: {
-    companyName: 'Acme Corporation'
-    // ...
+    variables: { ... },
+    functions: { ... },
+    config: { ... }
   }
 })
 
