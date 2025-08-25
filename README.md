@@ -136,6 +136,35 @@ Then you can send it via your email provider.
 
 ---
 
+## ⚙ Local Api
+
+### Generate Email Template
+
+It's also possible to render the email template by calling `renderEmailTemplate` directly in the back-end, skipping the http request in that case.
+
+```js
+import { renderEmailTemplate } from "payload-email-template"
+
+// const emailTemplate = await req.payload.find({
+//   collection: 'email-templates',
+//   ...
+// })
+
+const html = await renderEmailTemplate({
+  data: emailTemplate,
+  locale: 'en',
+  format: 'html',
+  macroContext: {
+    variables: { ... },
+    functions: { ... },
+    config: { ... }
+  }
+})
+
+```
+
+---
+
 ## 🔧 Macros
 
 The plugin supports powerful dynamic content through macros that can be used in email subjects, headings, and text blocks.
