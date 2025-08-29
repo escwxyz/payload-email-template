@@ -1,5 +1,11 @@
 # payload-email-template
 
+## 1.2.1
+
+### Patch Changes
+
+- cfd8eef: export renderEmailTemplate for local api usage
+
 ## 1.2.0
 
 ### Minor Changes
